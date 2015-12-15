@@ -5,4 +5,14 @@ class MobileEntity extends Entity
   MobileEntity()
   {
   }
+  
+  void update()
+  {
+    
+  }
+  
+  void move()
+  {
+  }
+
 }

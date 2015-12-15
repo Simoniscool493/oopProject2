@@ -16,7 +16,7 @@ class Player extends MobileEntity
     posX=x;
     posY=y;
     
-    speed = 5;
+    speed = 10;
   }
   
   void update()

@@ -22,6 +22,7 @@ class Entity
   
   void move()
   {
+    
   }
   
 }
