@@ -1,9 +1,20 @@
-class Player extends Entity
+class Player extends MobileEntity
 {
-  Player()
+  int lv;
+  int exp;
+  int hp;
+  int maxHp;
+  int mp;
+  int maxMp;
+  int atk;
+  int def;
+  
+  Player(float x,float y)
   {
-    posX=width/2;
-    posY=height/2;
+    lv = 1;
+    exp = 0;
+    posX=x;
+    posY=y;
     
     speed = 5;
   }
@@ -12,7 +23,6 @@ class Player extends Entity
   {
     fill(128);
     ellipse(posX,posY,50,50);
-    //println(posY);
   }
   
   void move()

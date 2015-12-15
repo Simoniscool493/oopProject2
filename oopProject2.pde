@@ -6,12 +6,11 @@ float sideBorder;
 
 void setup()
 {
-  size(500,500);
+  size(1000,1000);
   topBorder = height/8;
   sideBorder = width/8;
   
-  Entity player1 = new Player();
-  ent.add(player1);
+  makePlayer();
   background = loadImage("wall1.png");
 }
 
@@ -37,3 +36,8 @@ void keyReleased()
   keys[keyCode] = false;
 }
 
+void makePlayer()
+{
+  Entity player1 = new Player(width/2,height/2);
+  ent.add(player1);
+}

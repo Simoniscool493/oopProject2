@@ -2,10 +2,17 @@ class Entity
 {
   float posX;
   float posY;
-  float speed;
+  PImage sprite;
   
   Entity()
   {
+    this(0,0);
+  }
+  
+  Entity(float x,float y)
+  {
+    posX = x;
+    posY = y;
   }
   
   void update()
