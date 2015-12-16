@@ -15,8 +15,9 @@ class Player extends MobileEntity
     exp = 0;
     posX=x;
     posY=y;
+    hitBox=25;
     
-    speed = 10;
+    movementSpeed = 10;
   }
   
   void update()
@@ -29,19 +30,19 @@ class Player extends MobileEntity
   {
     if (keys['W']&&posY>topBorder)
     {
-      posY-=speed;
+      posY-=movementSpeed;
     }      
     if (keys['A']&&posX>sideBorder)
     {
-      posX-=speed;
+      posX-=movementSpeed;
     }      
     if (keys['S']&&posY<height-topBorder)
     {
-      posY+=speed;
+      posY+=movementSpeed;
     }      
     if (keys['D']&&posX<width-sideBorder)
     {
-      posX+=speed;
+      posX+=movementSpeed;
     }      
   }
 

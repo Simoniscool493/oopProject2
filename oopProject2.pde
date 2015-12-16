@@ -5,6 +5,7 @@ boolean[] keys = new boolean[512];
 PImage background;
 float topBorder;
 float sideBorder;
+char mode;
 
 void setup()
 {
@@ -13,22 +14,41 @@ void setup()
   sideBorder = width/8;
   
   makePlayer();
+  
+  print(((Player)ent.get(0)).lv);
+  
   loadMonsters();
   
   makeMonster(0);
   
   background = loadImage("wall1.png");
+  mode = 'o';
 }
 
 void draw()
 {
-  background(147,91,62);
-  
-  image(background,0,0,width,height);
-  for(Entity e:ent)
+  if(mode == 'o')
   {
-    e.move();
-    e.update();
+    imageMode(CORNER);
+    background(147,91,62);
+    image(background,0,0,width,height);
+    imageMode(CENTER);
+    for(Entity e:ent)
+    {
+      e.move();
+      e.update();
+  
+      if(e instanceof MonsterInstance&&(ent.get(0)).isTouching(e))
+      {
+        mode = 'b';
+      }
+    }
+  }
+  else if(mode == 'b')
+  {
+    background(255);
+    rect(sideBorder/2,height-(height/3),width-(sideBorder),height/3-topBorder/2);
+    
   }
 }
 

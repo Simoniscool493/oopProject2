@@ -1,6 +1,6 @@
 class MobileEntity extends Entity
 {
-  float speed;
+  float movementSpeed;
 
   MobileEntity()
   {
