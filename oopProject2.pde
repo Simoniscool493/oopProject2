@@ -19,7 +19,7 @@ void setup()
   
   loadMonsters();
   
-  makeMonster(2);
+  makeMonster(0);
   
   background = loadImage("wall1.png");
   mode = 'o';
@@ -33,8 +33,7 @@ void draw()
   }
   else if(mode == 'b')
   {
-
-    doBattle();    
+    b.doBattle();    
   }
 }
 
@@ -102,15 +101,4 @@ void makeMonster(int id)
   ent.add(monster);
 }
 
-
-void doBattle()
-{
-
-    background(255);
-    fill(128);
-    rect(sideBorder/2,height-(height/3),width-(sideBorder),height/3-topBorder/2);
-    b.battleText(b.enemy.template.battleStartText);
-    b.showBattleText();
-
-}
 

@@ -14,7 +14,7 @@ class MonsterInstance extends MobileEntity
   
   void update()
   {
-      image(template.overworldSprite,posX,posY);
+      image(sprite,posX,posY);
   }
   
   void move()
