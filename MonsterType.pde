@@ -8,6 +8,7 @@ class MonsterType
   int speed;
   PImage overworldSprite;
   PImage battleSprite;
+  String battleStartText;
   
   MonsterType()
   {

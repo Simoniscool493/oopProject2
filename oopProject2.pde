@@ -6,20 +6,20 @@ PImage background;
 float topBorder;
 float sideBorder;
 char mode;
+Battle b;
 
 void setup()
 {
   size(1000,1000);
   topBorder = height/8;
   sideBorder = width/8;
+  textSize(30);
   
   makePlayer();
   
-  print(((Player)ent.get(0)).lv);
-  
   loadMonsters();
   
-  makeMonster(0);
+  makeMonster(2);
   
   background = loadImage("wall1.png");
   mode = 'o';
@@ -29,26 +29,12 @@ void draw()
 {
   if(mode == 'o')
   {
-    imageMode(CORNER);
-    background(147,91,62);
-    image(background,0,0,width,height);
-    imageMode(CENTER);
-    for(Entity e:ent)
-    {
-      e.move();
-      e.update();
-  
-      if(e instanceof MonsterInstance&&(ent.get(0)).isTouching(e))
-      {
-        mode = 'b';
-      }
-    }
+    doOverworld();
   }
   else if(mode == 'b')
   {
-    background(255);
-    rect(sideBorder/2,height-(height/3),width-(sideBorder),height/3-topBorder/2);
-    
+
+    doBattle();    
   }
 }
 
@@ -68,6 +54,25 @@ void makePlayer()
   ent.add(player1);
 }
 
+void doOverworld()
+{
+    imageMode(CORNER);
+    background(147,91,62);
+    image(background,0,0,width,height);
+    imageMode(CENTER);
+    for(Entity e:ent)
+    {
+      e.move();
+      e.update();
+  
+      if(e instanceof MonsterInstance && (ent.get(0)).isTouching(e))
+      {
+        b = new Battle((MonsterInstance)e);
+        mode = 'b';
+      }
+    }
+}
+
 void loadMonsters()
 {
   String[] monsters = loadStrings("monsters.csv");
@@ -85,7 +90,9 @@ void loadMonsters()
     monster.atk = parseInt(buffer[3]);
     monster.def = parseInt(buffer[4]);
     monster.speed = parseInt(buffer[5]);
+    monster.battleStartText = buffer[6];
     monster.overworldSprite = loadImage(monster.id+"ov.png");
+    monster.battleSprite = loadImage(monster.id+"ba.png");
   }
 }
 
@@ -94,3 +101,16 @@ void makeMonster(int id)
   Entity monster = new MonsterInstance(mon.get(id));
   ent.add(monster);
 }
+
+
+void doBattle()
+{
+
+    background(255);
+    fill(128);
+    rect(sideBorder/2,height-(height/3),width-(sideBorder),height/3-topBorder/2);
+    b.battleText(b.enemy.template.battleStartText);
+    b.showBattleText();
+
+}
+
