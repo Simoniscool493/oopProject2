@@ -6,6 +6,7 @@ PImage background;
 float topBorder;
 float sideBorder;
 char mode;
+
 Battle b;
 
 void setup()
@@ -13,10 +14,9 @@ void setup()
   size(1000,1000);
   topBorder = height/8;
   sideBorder = width/8;
-  textSize(30);
+  textSize(height/33);
   
   makePlayer();
-  
   loadMonsters();
   
   makeMonster(0);

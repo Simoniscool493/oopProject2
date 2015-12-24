@@ -21,9 +21,9 @@ class Player extends MobileEntity
     hitBox=25;
     
     maxHp = 10;
-    hp = 10;
+    hp = 6;
     maxMp = 10;
-    mp = 10;
+    mp = 2;
     atk = 5;
     def = 5;
     speed = 5;
