@@ -1,6 +1,7 @@
 class Battle
 {
   MonsterInstance enemy;
+    
   String curBattleText;
   char[] buffer;
   int phase;
@@ -16,13 +17,7 @@ class Battle
   }
   
   void doBattle()
-  {
-    if(buffer[0]!='#')
-    {
-      showBattleText();
-    }
-    else
-    {
+  {       
       if(phase == 1)
       {
         battleText(enemy.template.battleStartText);
@@ -49,42 +44,22 @@ class Battle
      
       showBattleDetails();
     }
+  
+  void showTurnMenu()
+  {
+    fill(255);
+    rect(sideBorder/2+sideBorder/8,height-(height/3)+topBorder/8,width/2,height/3-topBorder/2-topBorder/4);
+    
   }
   
   void battleText(String s)
   {
-    buffer = s.toCharArray();
+      curBattleText = s;
   }
   
   void showBattleText()
-  {
-     if(textSpot==-1)
-     {
-       if(key==' ')
-       {
-          textSpot = 0;
-          buffer = "#".toCharArray();
-       }
-     }
-     else
-     {
+  {    
      fill(0);
-     if(curBattleText == null)
-     {
-       curBattleText = String.valueOf(buffer[0]);
-       textSpot++;
-     }
-     else
-     {
-       curBattleText = curBattleText + buffer[textSpot];
-       textSpot++;
-       if(textSpot == buffer.length)
-       {
-         textSpot = -1;
-       }
-     }
-   }
-     
      text(curBattleText,sideBorder,height-(height/3)+topBorder/2);
   }
   
@@ -136,6 +111,12 @@ class Battle
     text(turn,50,30);
     
     showBattleSprite();
+    showBattleText();
+    
+    if(turn == 'p')
+    {
+      showTurnMenu();
+    }
   }
   
   void showBattleSprite()
