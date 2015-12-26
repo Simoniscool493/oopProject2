@@ -26,7 +26,7 @@ class Player extends MobileEntity
     mp = 2;
     atk = 500000;
     def = 5;
-    speed = 5;
+    speed = 100;
     
     movementSpeed = 10;
   }

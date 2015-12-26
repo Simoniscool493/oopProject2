@@ -7,7 +7,7 @@ class Entity
   
   Entity()
   {
-    this(width,0);
+    this(width/3,height/3);
   }
   
   Entity(float x,float y)

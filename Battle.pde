@@ -233,6 +233,8 @@ class Battle
     
     text(phase,30,30);
     text(turn,50,30);
+    text(textDepth,70,30);
+
     
     showBattleSprite();
     showBattleText();

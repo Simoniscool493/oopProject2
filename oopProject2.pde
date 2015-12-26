@@ -21,8 +21,8 @@ void setup()
   makePlayer();
   loadMonsters();
   
-  makeMonster(1);
-  
+  makeMonster(2);
+
   background = loadImage("wall1.png");
   mode = 'o';
 }
@@ -117,6 +117,10 @@ void keyTyped()
   if(key == ' ')
   {
     next = true;
+  }
+  if(key == 'm')
+  {
+    makeMonster(2);
   }
 }
 

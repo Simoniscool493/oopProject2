@@ -19,8 +19,11 @@ class MonsterInstance extends MobileEntity
   
   void move()
   {
-    posX-=movementSpeed;
-    posY+=movementSpeed;
+    posX+=(movementSpeed*(random(1)));
+    posX-=(movementSpeed*(random(1)));
+
+    posY+=(movementSpeed*(random(1)));
+    posY-=(movementSpeed*(random(1)));
   }
 
 }
