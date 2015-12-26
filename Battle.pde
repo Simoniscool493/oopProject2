@@ -5,25 +5,35 @@ class Battle
   String curBattleText;
   char[] buffer;
   int phase;
-  int textSpot;
-  char turn = 'n';
+  int textDepth;
+  int index;
+  int damage;
+  char turn = 's';
   
-  Battle(MonsterInstance m)
+// s = starting state
+// e = enemy turn
+// p = player turn
+// q = player action
+// f = enemy action
+  Battle(MonsterInstance m,int ind)
   {
     enemy = m;
+    index = ind;
     phase = 1;
-    textSpot = 0;
+    textDepth = 0;
     buffer = "#".toCharArray();
+    menuPoint = 0;
   }
   
   void doBattle()
   {       
-      if(phase == 1)
+      if(turn == 's')
       {
         battleText(enemy.template.battleStartText);
-        if(key==' ')
+        if(next)
         {
-          phase++;
+          curBattleText = " ";
+          next = false;
           if(enemy.template.speed>((Player)(ent.get(0))).speed)
           {
             turn = 'e';
@@ -34,27 +44,141 @@ class Battle
           }
         }
       }
-      else if(phase == 2);
+      
+     if(turn == 'p')
+     {
+       if(next)
+       {
+          next = false;
+          turn = 'q';
+       }
+     }
+     
+     if(turn == 'q')
+     {
+       {
+         doSelected(menuPoint);
+       }
+     }
+         
+    if(turn == 'w')
+    {
+      if(textDepth==0)
       {
-        if(turn == 'p')
+        sequentialText("You win!!");
+      }
+      if(textDepth==1)
+      {
+        if(sequentialText("You gained "+ enemy.template.exp +" exp. points"))
         {
-          
+          mode = 'o';
+          ent.remove(index);
         }
       }
-     
-      showBattleDetails();
     }
+    
+    showBattleDetails();
+  }
+      
+    
+  void doSelected(int sel)
+  {
+    
+    if(menuPoint==0)
+    {
+      basicAttack();
+    }
+    if(menuPoint==1)
+    {
+      println("Magic");
+    }
+    if(menuPoint==2)
+    {
+      println("item");
+    }
+    if(menuPoint==3)
+    {
+      println("run");
+    }
+  }
+  
+  void basicAttack()
+  {
+    if(textDepth==0)
+    {
+       if(sequentialText(((Player)(ent.get(0))).name + " attacks!"))
+       {
+         damage = (((Player)(ent.get(0))).atk/enemy.template.def);
+         if(damage<1)
+         {
+           damage=1;
+         }
+         if(damage>enemy.curHp)
+         {
+           enemy.curHp=0;
+         }
+         else
+         {
+           enemy.curHp-=damage;
+         }
+       }
+    }
+    if(textDepth==1)
+    {
+      sequentialText("you dealt a crazy "+ damage +" damage!");
+    }
+    if(textDepth==2)
+    {
+      if(enemy.curHp==0)
+      {
+        sequentialText("You know he ded");
+        turn = 'w';
+        textDepth = 0;
+      }
+      else
+      {
+        turn = 'e';
+        textDepth = 0;
+      }
+    }
+  }
   
   void showTurnMenu()
   {
-    fill(255);
-    rect(sideBorder/2+sideBorder/8,height-(height/3)+topBorder/8,width/2,height/3-topBorder/2-topBorder/4);
+    if(menuPoint>3)
+    {
+      menuPoint=0;
+    }
+    if(menuPoint<0)
+    {
+      menuPoint=3;
+    }
     
+    fill(255);
+    rect(sideBorder/2+sideBorder/8,height-(height/3)+topBorder/8,width/3,height/3-topBorder/2-topBorder/4);
+    fill(0);
+    text("Attack\nMagic\nItem\nRun",sideBorder/2+sideBorder/3,height-(height/3)+topBorder/2);
+    ellipse(sideBorder/2-sideBorder/10+sideBorder/3,height-(height/3)+topBorder/2-topBorder/10+(menuPoint*topBorder*0.36),10,10);
   }
-  
+    
   void battleText(String s)
   {
       curBattleText = s;
+  }
+  
+  boolean sequentialText(String s)
+  {
+     battleText(s);
+     
+     if(next)
+     {
+       next=false;
+       textDepth++;
+       
+       return true;
+     }
+     
+     return false;
   }
   
   void showBattleText()

@@ -6,6 +6,8 @@ PImage background;
 float topBorder;
 float sideBorder;
 char mode;
+int menuPoint = 0;
+boolean next;
 
 Battle b;
 
@@ -19,7 +21,7 @@ void setup()
   makePlayer();
   loadMonsters();
   
-  makeMonster(0);
+  makeMonster(1);
   
   background = loadImage("wall1.png");
   mode = 'o';
@@ -66,7 +68,7 @@ void doOverworld()
   
       if(e instanceof MonsterInstance && (ent.get(0)).isTouching(e))
       {
-        b = new Battle((MonsterInstance)e);
+        b = new Battle((MonsterInstance)e,ent.indexOf(e));
         mode = 'b';
       }
     }
@@ -76,7 +78,7 @@ void loadMonsters()
 {
   String[] monsters = loadStrings("monsters.csv");
   
-  for(int i=0;i<monsters.length;i++)
+  for(int i=1;i<monsters.length;i++)
   {
     MonsterType monster = new MonsterType();
     mon.add(monster);
@@ -90,6 +92,7 @@ void loadMonsters()
     monster.def = parseInt(buffer[4]);
     monster.speed = parseInt(buffer[5]);
     monster.battleStartText = buffer[6];
+    monster.exp = parseInt(buffer[7]);
     monster.overworldSprite = loadImage(monster.id+"ov.png");
     monster.battleSprite = loadImage(monster.id+"ba.png");
   }
@@ -99,6 +102,22 @@ void makeMonster(int id)
 {
   Entity monster = new MonsterInstance(mon.get(id));
   ent.add(monster);
+}
+
+void keyTyped()
+{
+  if(key == 'w')
+  {
+    menuPoint--;
+  }
+  if(key == 's')
+  {
+    menuPoint++;
+  }
+  if(key == ' ')
+  {
+    next = true;
+  }
 }
 
 

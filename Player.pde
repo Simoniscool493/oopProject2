@@ -24,7 +24,7 @@ class Player extends MobileEntity
     hp = 6;
     maxMp = 10;
     mp = 2;
-    atk = 5;
+    atk = 500000;
     def = 5;
     speed = 5;
     
