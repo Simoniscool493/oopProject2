@@ -3,11 +3,13 @@ ArrayList<MonsterType> mon = new ArrayList<MonsterType>();
 
 boolean[] keys = new boolean[512];
 PImage background;
+PImage title;
 float topBorder;
 float sideBorder;
 char mode;
 
 float circleSize;
+float titleHeight;
 
 // i = intro 
 // o = overworld
@@ -15,7 +17,8 @@ float circleSize;
 // b = battle
 
 int menuPoint = 0;
-boolean next;
+boolean battleNext = false;
+boolean next = false;
 
 Battle b;
 
@@ -34,6 +37,7 @@ void setup()
   makeMonster(2);
   b = new Battle((MonsterInstance)ent.get(1),1);
 
+  title = loadImage("title.png");
   background = loadImage("wall1.png");
   mode = 'i';
 }
@@ -121,18 +125,23 @@ void makeMonster(int id)
 
 void keyTyped()
 {
-  
-      print(b.turn);
-
-  if(mode == 'b' && b.turn == 'p')
+  if(mode == 'b')
   {
-    if(key == 'w')
+    if(b.turn == 'p')
     {
-      menuPoint--;
+      if(key == 'w')
+      {
+        menuPoint--;
+      }
+      if(key == 's')
+      {
+        menuPoint++;
+      }
     }
-    if(key == 's')
+    
+    if(key == ' ')
     {
-      menuPoint++;
+      battleNext = true;
     }
   }
   
@@ -140,6 +149,7 @@ void keyTyped()
   {
     next = true;
   }
+  
   if(key == 'm')
   {
     makeMonster(2);
@@ -150,12 +160,19 @@ void playIntro()
 {
   fill(255);
   background(0);
+  imageMode(CENTER);
   ellipse(width/2,height/2,circleSize,circleSize);
+  image(title,width/2,height-titleHeight);
+  
   if(circleSize<width/1.5)
   {
     circleSize+=5;
   }
-  println(circleSize);
+  if(titleHeight<height/2)
+  {
+    titleHeight+=5;
+  }
+  
   
   if(next)
   {

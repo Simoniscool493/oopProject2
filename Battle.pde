@@ -30,10 +30,10 @@ class Battle
       if(turn == 's')
       {
         battleText(enemy.template.battleStartText);
-        if(next)
+        if(battleNext)
         {
           curBattleText = " ";
-          next = false;
+          battleNext = false;
           if(enemy.template.speed>((Player)(ent.get(0))).speed)
           {
             turn = 'e';
@@ -47,9 +47,9 @@ class Battle
       
      if(turn == 'p')
      {
-       if(next)
+       if(battleNext)
        {
-          next = false;
+          battleNext = false;
           turn = 'q';
        }
      }
@@ -176,9 +176,9 @@ class Battle
   {
      battleText(s);
      
-     if(next)
+     if(battleNext)
      {
-       next=false;
+       battleNext=false;
        textDepth++;
        
        return true;
@@ -255,5 +255,4 @@ class Battle
   {
     image(enemy.template.battleSprite,width/2,height/2);
   }
-
 }
