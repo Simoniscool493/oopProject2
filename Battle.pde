@@ -132,14 +132,20 @@ class Battle
       if(enemy.curHp==0)
       {
         sequentialText("You know he ded");
+      }
+    }
+    if(textDepth==3)
+    {
+      if(enemy.curHp==0)
+      {
         turn = 'w';
-        textDepth = 0;
       }
       else
       {
         turn = 'e';
-        textDepth = 0;
       }
+      
+    textDepth = 0;
     }
   }
   

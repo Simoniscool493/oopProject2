@@ -6,6 +6,14 @@ PImage background;
 float topBorder;
 float sideBorder;
 char mode;
+
+float circleSize;
+
+// i = intro 
+// o = overworld
+// m = menu
+// b = battle
+
 int menuPoint = 0;
 boolean next;
 
@@ -18,17 +26,24 @@ void setup()
   sideBorder = width/8;
   textSize(height/33);
   
+  circleSize = 0;
+  
   makePlayer();
   loadMonsters();
-  
+    
   makeMonster(2);
+  b = new Battle((MonsterInstance)ent.get(1),1);
 
   background = loadImage("wall1.png");
-  mode = 'o';
+  mode = 'i';
 }
 
 void draw()
-{
+{  
+  if(mode == 'i')
+  {
+    playIntro();
+  }
   if(mode == 'o')
   {
     doOverworld();
@@ -106,14 +121,21 @@ void makeMonster(int id)
 
 void keyTyped()
 {
-  if(key == 'w')
+  
+      print(b.turn);
+
+  if(mode == 'b' && b.turn == 'p')
   {
-    menuPoint--;
+    if(key == 'w')
+    {
+      menuPoint--;
+    }
+    if(key == 's')
+    {
+      menuPoint++;
+    }
   }
-  if(key == 's')
-  {
-    menuPoint++;
-  }
+  
   if(key == ' ')
   {
     next = true;
@@ -124,4 +146,20 @@ void keyTyped()
   }
 }
 
-
+void playIntro()
+{
+  fill(255);
+  background(0);
+  ellipse(width/2,height/2,circleSize,circleSize);
+  if(circleSize<width/1.5)
+  {
+    circleSize+=5;
+  }
+  println(circleSize);
+  
+  if(next)
+  {
+    next = false;
+    mode = 'o';
+  }
+}
