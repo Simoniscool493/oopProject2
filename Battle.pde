@@ -34,7 +34,7 @@ class Battle
         {
           curBattleText = " ";
           battleNext = false;
-          if(enemy.template.speed>((Player)(ent.get(0))).speed)
+          if(enemy.template.speed>p.speed)
           {
             turn = 'e';
           }
@@ -90,25 +90,50 @@ class Battle
     }
     if(menuPoint==1)
     {
-      println("Magic");
+      doMagic();
     }
     if(menuPoint==2)
     {
-      println("item");
+      useItem();
     }
     if(menuPoint==3)
     {
-      println("run");
+      run();
     }
   }
   
+  void doMagic()
+  {
+    
+  }
+  
+  void useItem()
+  {
+    
+  }
+  
+  void run()
+  {
+    if(textDepth == 0)
+    {
+      sequentialText("You ran away");
+    }
+    if(textDepth == 1)
+    {
+      p.mercyInvincibility = 120;
+      mode = 'o';
+    }
+    
+  }
+  
+
   void basicAttack()
   {
     if(textDepth==0)
     {
-       if(sequentialText(((Player)(ent.get(0))).name + " attacks!"))
+       if(sequentialText(p.name + " attacks!"))
        {
-         damage = (((Player)(ent.get(0))).atk/enemy.template.def);
+         damage = (p.atk/enemy.template.def);
          if(damage<1)
          {
            damage=1;
@@ -195,14 +220,14 @@ class Battle
   
   void showOwnStats()
   {
-     float mappedHP = map((((Player)(ent.get(0))).hp),0,(((Player)(ent.get(0))).maxHp),0,width*0.36875);
-     float mappedMP = map((((Player)(ent.get(0))).mp),0,(((Player)(ent.get(0))).maxMp),0,width*0.36875);
+     float mappedHP = map(p.hp,0,p.maxHp,0,width*0.36875);
+     float mappedMP = map(p.mp,0,p.maxMp,0,width*0.36875);
      
      fill(128);
      rect(sideBorder/2,topBorder/2,width/2.5,height/7);
      
      fill(0);
-     text((((Player)(ent.get(0))).name) + " LV " + (((Player)(ent.get(0))).lv),sideBorder/2,topBorder/3);
+     text(p.name + " LV " + p.lv,sideBorder/2,topBorder/3);
      
      rect(sideBorder/2+sideBorder/8,topBorder/2+topBorder/8,width*0.36875,height/21);
      fill(0,255,0);
@@ -241,7 +266,6 @@ class Battle
     text(turn,50,30);
     text(textDepth,70,30);
 
-    
     showBattleSprite();
     showBattleText();
     

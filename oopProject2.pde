@@ -21,6 +21,7 @@ boolean battleNext = false;
 boolean next = false;
 
 Battle b;
+Player p;
 
 void setup()
 {
@@ -35,7 +36,7 @@ void setup()
   loadMonsters();
     
   makeMonster(2);
-  b = new Battle((MonsterInstance)ent.get(1),1);
+  b = new Battle((MonsterInstance)ent.get(0),1);
 
   title = loadImage("title.png");
   background = loadImage("wall1.png");
@@ -70,8 +71,7 @@ void keyReleased()
 
 void makePlayer()
 {
-  Entity player1 = new Player(width/2,height/2);
-  ent.add(player1);
+  p = new Player(width/2,height/2);
 }
 
 void doOverworld()
@@ -80,17 +80,35 @@ void doOverworld()
     background(147,91,62);
     image(background,0,0,width,height);
     imageMode(CENTER);
-    for(Entity e:ent)
-    {
-      e.move();
-      e.update();
+
+    updateEntities();
+    updatePlayer();
+}
+
+void updateEntities()
+{
+  for(Entity e:ent)
+  {
+    e.move();
+    e.update();
   
-      if(e instanceof MonsterInstance && (ent.get(0)).isTouching(e))
-      {
-        b = new Battle((MonsterInstance)e,ent.indexOf(e));
-        mode = 'b';
-      }
+    if(e instanceof MonsterInstance && p.isTouching(e) && p.mercyInvincibility == 0)
+    {
+      b = new Battle((MonsterInstance)e,ent.indexOf(e));
+      mode = 'b';
     }
+  }
+}
+
+void updatePlayer()
+{
+  p.move();
+  p.update();    
+  
+  if(p.mercyInvincibility>0)
+  {
+    p.mercyInvincibility--;
+  }
 }
 
 void loadMonsters()
@@ -152,7 +170,7 @@ void keyTyped()
   
   if(key == 'm')
   {
-    makeMonster(2);
+    makeMonster((int)random(3));
   }
 }
 
@@ -162,7 +180,7 @@ void playIntro()
   background(0);
   imageMode(CENTER);
   ellipse(width/2,height/2,circleSize,circleSize);
-  image(title,width/2,height-titleHeight);
+  image(title,width/2,height-titleHeight,width/1.2,height/10);
   
   if(circleSize<width/1.5)
   {
