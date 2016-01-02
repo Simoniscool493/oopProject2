@@ -17,7 +17,7 @@ class Player extends MobileEntity
   Player(float x,float y)
   {
     name = "Bob";
-    lv = 1;
+    lv = 3;
     exp = 0;
     posX=x;
     posY=y;
