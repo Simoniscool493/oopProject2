@@ -8,8 +8,8 @@ float topBorder;
 float sideBorder;
 char mode;
 
-float circleSize;
-float titleHeight;
+float introCircleSize;
+float introTitleHeight;
 
 // i = intro 
 // o = overworld
@@ -30,7 +30,7 @@ void setup()
   sideBorder = width/8;
   textSize(height/33);
   
-  circleSize = 0;
+  introCircleSize = 0;
   
   makePlayer();
   loadMonsters();
@@ -57,6 +57,23 @@ void draw()
   {
     b.doBattle();    
   }
+  if(mode == 'm')
+  {
+    showMenu();
+  }
+}
+
+void showMenu()
+{
+  fill(128);
+  rect(sideBorder,topBorder,width-sideBorder*2,height-topBorder*2);
+  fill(0);
+  text(p.name + " LV " + p.lv,sideBorder*1.5,topBorder*1.5);
+  text("Atk: " + p.atk + "       Def: " + p.def + "       Spd: " + p.speed,sideBorder*1.5,topBorder*2);
+  text("To next level: " + p.expToLvUp,sideBorder*1.5,topBorder*2.5);
+  
+
+
 }
 
 void keyPressed()
@@ -163,6 +180,22 @@ void keyTyped()
     }
   }
   
+  if(key == 'e')
+  {
+    if(mode == 'o')
+    {
+      mode = 'm';
+    }
+  }
+  
+  if(key == 'q')
+  {
+    if(mode == 'm')
+    {
+     mode = 'o';
+    }
+  }
+    
   if(key == ' ')
   {
     next = true;
@@ -179,16 +212,16 @@ void playIntro()
   fill(255);
   background(0);
   imageMode(CENTER);
-  ellipse(width/2,height/2,circleSize,circleSize);
-  image(title,width/2,height-titleHeight,width/1.2,height/10);
+  ellipse(width/2,height/2,introCircleSize,introCircleSize);
+  image(title,width/2,height-introTitleHeight,width/1.2,height/10);
   
-  if(circleSize<width/1.5)
+  if(introCircleSize<width/1.5)
   {
-    circleSize+=5;
+    introCircleSize+=5;
   }
-  if(titleHeight<height/2)
+  if(introTitleHeight<height/2)
   {
-    titleHeight+=5;
+    introTitleHeight+=5;
   }
   
   

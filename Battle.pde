@@ -4,12 +4,22 @@ class Battle
     
   String curBattleText;
   char[] buffer;
+  boolean inMenu = false;
   int phase;
   int textDepth;
   int index;
   int damage;
   char turn = 's';
+  char menu = 'n';
+  
+  // s = starting state
+  // e = enemy turn
+  // p = player turn
+  // q = player action
+  // f = enemy action
+
   String[] turnMenu = {"Attack","Magic","Item","Run"};
+  String[] magicMenu = {"Fire","Freeze","Thunder","Heal"};
   
   float bSideBorder = sideBorder/2;
   float bTopBorder = topBorder/2;
@@ -19,14 +29,7 @@ class Battle
   
   float bMainMenuWidth = width-(bSideBorder*2);
   float bMainMenuHeight = height/3;
-
-
   
-// s = starting state
-// e = enemy turn
-// p = player turn
-// q = player action
-// f = enemy action
   Battle(MonsterInstance m,int ind)
   {
     enemy = m;
@@ -56,7 +59,6 @@ class Battle
     
     if(turn == 'p')
     {
-      //showTurnMenu();
       showMenu(turnMenu);
     }
   }
@@ -67,20 +69,7 @@ class Battle
 
       if(turn == 's')
       {
-        battleText(enemy.template.battleStartText);
-        if(battleNext)
-        {
-          curBattleText = " ";
-          battleNext = false;
-          if(enemy.template.speed>p.speed)
-          {
-            turn = 'e';
-          }
-          else
-          {
-            turn = 'p';
-          }
-        }
+        startBattle();
       }
       
      if(turn == 'p')
@@ -103,20 +92,47 @@ class Battle
     {
       if(textDepth==0)
       {
-        sequentialText("You win!!");
+        sequentialText("You win!!",1);
       }
       if(textDepth==1)
       {
-        if(sequentialText("You gained "+ enemy.template.exp +" exp. points"))
+        if(sequentialText("You gained "+ enemy.template.exp +" exp. points",2))
         {
-          mode = 'o';
-          ent.remove(index);
-        }
+          p.expToLvUp-=enemy.template.exp;
+          
+          if(expToLvUp<1)
+          {
+            textDepth = 3;
+          }
       }
-    }
+      if(textDepth==2)
+      {
+        
+      }
+      if(textDepth==3)
+      {
+      }
     
   }
-      
+  
+  void startBattle()
+  {
+    battleText(enemy.template.battleStartText);
+    if(battleNext)
+    {
+      curBattleText = " ";
+      battleNext = false;
+      if(enemy.template.speed>p.speed)
+      {
+        turn = 'e';
+      }
+      else
+      {
+        turn = 'p';
+      }
+    }
+  }
+  
     
   void doSelected(int sel)
   {
@@ -143,10 +159,7 @@ class Battle
   {
     if(textDepth==0)
     {
-      fill(255);
-      rect(mSideBorder,height-(height/3)+topBorder/8,width/3,height/3-topBorder/2-topBorder/4);
-      fill(0);
-      text("Fire\nIce\nThunder\nHeal",sideBorder/2+sideBorder/3,height-(height/3)+topBorder/2);
+      showMenu(magicMenu);
     }
   }
   
@@ -159,22 +172,20 @@ class Battle
   {
     if(textDepth == 0)
     {
-      sequentialText("You ran away");
+      sequentialText("You ran away",1);
     }
     if(textDepth == 1)
     {
       p.mercyInvincibility = 120;
       mode = 'o';
     }
-    
   }
-  
 
   void basicAttack()
   {
     if(textDepth==0)
     {
-       if(sequentialText(p.name + " attacks!"))
+       if(sequentialText(p.name + " attacks!",1))
        {
          damage = (p.atk/enemy.template.def);
          if(damage<1)
@@ -193,13 +204,13 @@ class Battle
     }
     if(textDepth==1)
     {
-      sequentialText("you dealt a crazy "+ damage +" damage!");
+      sequentialText("you dealt a crazy "+ damage +" damage!",2);
     }
     if(textDepth==2)
     {
       if(enemy.curHp==0)
       {
-        sequentialText("You know he ded");
+        sequentialText("You know he dead",3);
       }
     }
     if(textDepth==3)
@@ -222,14 +233,14 @@ class Battle
       curBattleText = s;
   }
   
-  boolean sequentialText(String s)
+  boolean sequentialText(String s,int next)
   {
      battleText(s);
      
      if(battleNext)
      {
        battleNext=false;
-       textDepth++;
+       textDepth = next;
        
        return true;
      }
@@ -282,6 +293,7 @@ class Battle
   void showMenu(String[] points)
   {
     int l = points.length;
+    inMenu = true;
    
     if(menuPoint>l-1)
     {
@@ -298,7 +310,7 @@ class Battle
     
     for(int i=0;i<l;i++)
     {
-          text(points[i],sideBorder/2+sideBorder/3,height-(height/3)+topBorder/2-topBorder/10+(i*topBorder*0.36));
+      text(points[i],sideBorder/2+sideBorder/3,height-(height/3)+topBorder/2-topBorder/10+(i*topBorder*0.36)+(topBorder*0.1));
     }
       
     ellipse(sideBorder/2-sideBorder/10+sideBorder/3,height-(height/3)+topBorder/2-topBorder/10+(menuPoint*topBorder*0.36),10,10);

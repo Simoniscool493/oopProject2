@@ -1,4 +1,4 @@
-class Entity
+abstract class Entity
 {
   float posX;
   float posY;
