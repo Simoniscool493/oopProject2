@@ -90,31 +90,10 @@ class Battle
          
     if(turn == 'w')
     {
-      if(textDepth==0)
-      {
-        sequentialText("You win!!",1);
-      }
-      if(textDepth==1)
-      {
-        if(sequentialText("You gained "+ enemy.template.exp +" exp. points",2))
-        {
-          p.expToLvUp-=enemy.template.exp;
-          
-          if(expToLvUp<1)
-          {
-            textDepth = 3;
-          }
-      }
-      if(textDepth==2)
-      {
-        
-      }
-      if(textDepth==3)
-      {
-      }
-    
+      winBattle();
+    }
   }
-  
+ 
   void startBattle()
   {
     battleText(enemy.template.battleStartText);
@@ -133,6 +112,34 @@ class Battle
     }
   }
   
+  void winBattle()
+  {
+      if(textDepth==0)
+      {
+        sequentialText("You win!!",1);
+      }
+      if(textDepth==1)
+      {
+        if(sequentialText("You gained "+ enemy.template.exp +" exp. points",2))
+        {
+          p.expToLvUp-=enemy.template.exp;
+          
+          if(p.expToLvUp<1)
+          {
+            textDepth = 3;
+          }
+        }
+      }
+      if(textDepth==2)
+      {
+        mode = 'o';
+        ent.remove(index);
+      }
+      if(textDepth==3)
+      {
+          p.levelUp();
+      }
+  }
     
   void doSelected(int sel)
   {
@@ -235,8 +242,9 @@ class Battle
   
   boolean sequentialText(String s,int next)
   {
+
      battleText(s);
-     
+          
      if(battleNext)
      {
        battleNext=false;

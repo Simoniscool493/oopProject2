@@ -62,5 +62,23 @@ class Player extends MobileEntity
     }      
   }
 
+  void levelUp()
+  {
+    if(b.sequentialText(p.name + " grew to level " + (p.lv+1) + "!",2))
+    {
+      int buffer = expToLvUp;
+      lv++;
+      atk+=5;
+      def+=5;
+      expToLvUp = (lv*100);
+      expToLvUp-=buffer;
+      
+      if(expToLvUp<1)
+      {
+        levelUp();
+      }
+    }
+  }
+  
 
 }

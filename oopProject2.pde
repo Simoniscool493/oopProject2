@@ -71,9 +71,6 @@ void showMenu()
   text(p.name + " LV " + p.lv,sideBorder*1.5,topBorder*1.5);
   text("Atk: " + p.atk + "       Def: " + p.def + "       Spd: " + p.speed,sideBorder*1.5,topBorder*2);
   text("To next level: " + p.expToLvUp,sideBorder*1.5,topBorder*2.5);
-  
-
-
 }
 
 void keyPressed()
