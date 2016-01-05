@@ -1,4 +1,4 @@
 id,name,hp,atk,def,speed,battleStartText,exp
-0,test1,10,2,2,1,Test 1 will make you pay!,100
-1,test2,100,20,20,5,Test 2 seeks revenge!,200
-2,test3,10,2,2,10,Test 3 isn't sure why it's here.,300
+0,test1,10,2,2,1,Test 1 will make you pay!,10
+1,test2,100,20,20,5,Test 2 seeks revenge!,20
+2,test3,10,2,2,10,Test 3 isn't sure why it's here.,30

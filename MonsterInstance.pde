@@ -1,6 +1,6 @@
 class MonsterInstance extends MobileEntity
 {
-  int curHp;
+  int hp;
   int direction;
   MonsterType template;
     
@@ -11,12 +11,12 @@ class MonsterInstance extends MobileEntity
     sprite = m.overworldSprite;
     movementSpeed = 10;
     hitBox = 30;
-    curHp = template.hp-1;
+    hp = template.hp-1;
   }
   
   void update()
   {
-      image(sprite,posX,posY);
+    image(sprite,posX,posY);
   }
   
   void move()
@@ -58,6 +58,43 @@ class MonsterInstance extends MobileEntity
       }
     }
   }
-
+  
+  void act()
+  {
+    basicAttack();
+  }
+  
+  void basicAttack()
+  {
+    if(b.textDepth==0)
+    {
+       if(b.sequentialText(template.name + " attacks!",1))
+       {
+         b.damage = (template.atk/p.def);
+         if(b.damage<1)
+         {
+           b.damage=1;
+         }
+         if(b.damage>p.hp)
+         {
+           p.hp=0;
+         }
+         else
+         {
+           p.hp-=b.damage;
+         }
+       }
+    }
+    if(b.textDepth==1)
+    {
+      b.sequentialText("you took a calamatious "+ b.damage +" damage!",2);
+    }
+    if(b.textDepth==2)
+    {
+      b.battleText(" ");
+      b.turn = 'p';
+      b.textDepth = 0;
+    }
+  }
 }
 

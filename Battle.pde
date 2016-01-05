@@ -65,32 +65,40 @@ class Battle
   
   void doBattle()
   {
-     showBattleDetails();
+    showBattleDetails();
 
+    if(p.hp==0)
+    {
+      death();
+    }
+    else if(enemy.hp==0)
+    {
+      winBattle();
+    }
+    else
+    {
       if(turn == 's')
       {
         startBattle();
       }
-      
-     if(turn == 'p')
-     {
-       if(battleNext)
-       {
-          battleNext = false;
-          turn = 'q';
-       }
-     }
-     
-     if(turn == 'q')
-     {
-       {
-         doSelected(menuPoint);
-       }
-     }
-         
-    if(turn == 'w')
-    {
-      winBattle();
+      else if(turn == 'p')
+      {
+         if(battleNext)
+         {
+            battleNext = false;
+            turn = 'q';
+         }
+      }
+      else if(turn == 'q')
+      {
+         {
+           doSelected(menuPoint);
+         }
+      }
+      else if(turn=='e')
+      {
+        enemy.act();
+      }  
     }
   }
  
@@ -110,6 +118,22 @@ class Battle
         turn = 'p';
       }
     }
+  }
+  
+  void death()
+  {
+    if(textDepth==0)
+    {
+      sequentialText("You dead",1);
+    }
+    if(textDepth==1)
+    {
+      sequentialText("You black out",2);
+    }
+    if(textDepth==2)
+    {
+    }
+      
   }
   
   void winBattle()
@@ -195,43 +219,31 @@ class Battle
        if(sequentialText(p.name + " attacks!",1))
        {
          damage = (p.atk/enemy.template.def);
+         
          if(damage<1)
          {
            damage=1;
-         }
-         if(damage>enemy.curHp)
-         {
-           enemy.curHp=0;
-         }
-         else
-         {
-           enemy.curHp-=damage;
          }
        }
     }
     if(textDepth==1)
     {
-      sequentialText("you dealt a crazy "+ damage +" damage!",2);
-    }
-    if(textDepth==2)
-    {
-      if(enemy.curHp==0)
+      if(sequentialText("you dealt a crazy "+ damage +" damage!",2))
       {
-        sequentialText("You know he dead",3);
+         if(damage>enemy.hp)
+         {
+           enemy.hp=0;
+         }
+         else
+         {
+           enemy.hp-=damage;
+         }
       }
-    }
-    if(textDepth==3)
-    {
-      if(enemy.curHp==0)
-      {
-        turn = 'w';
-      }
-      else
+      if(textDepth==2)
       {
         turn = 'e';
+        textDepth = 0;
       }
-      
-    textDepth = 0;
     }
   }
       
@@ -242,14 +254,13 @@ class Battle
   
   boolean sequentialText(String s,int next)
   {
-
      battleText(s);
           
      if(battleNext)
      {
        battleNext=false;
        textDepth = next;
-       
+
        return true;
      }
      
@@ -284,7 +295,7 @@ class Battle
   
   void showEnemyStats()
   {
-     float mappedHP = map(enemy.curHp,0,enemy.template.hp,0,width*0.36875);
+     float mappedHP = map(enemy.hp,0,enemy.template.hp,0,width*0.36875);
 
      fill(128);
      rect(width-sideBorder/2-width/2.5,topBorder/2,width/2.5,height/7);

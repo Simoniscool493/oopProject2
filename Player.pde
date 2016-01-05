@@ -28,7 +28,7 @@ class Player extends MobileEntity
     hp = 6;
     maxMp = 10;
     mp = 2;
-    atk = 500000;
+    atk = 500;
     def = 5;
     speed = 100;
     expToLvUp = 100;
@@ -66,17 +66,11 @@ class Player extends MobileEntity
   {
     if(b.sequentialText(p.name + " grew to level " + (p.lv+1) + "!",2))
     {
-      int buffer = expToLvUp;
       lv++;
       atk+=5;
       def+=5;
+      speed+=5;
       expToLvUp = (lv*100);
-      expToLvUp-=buffer;
-      
-      if(expToLvUp<1)
-      {
-        levelUp();
-      }
     }
   }
   
