@@ -132,6 +132,8 @@ class Battle
     }
     if(textDepth==2)
     {
+      mode = 'd';
+      ent.remove(index);
     }
       
   }

@@ -15,7 +15,7 @@ float introTitleHeight;
 // o = overworld
 // m = menu
 // b = battle
-
+// d = death
 int menuPoint = 0;
 boolean battleNext = false;
 boolean next = false;
@@ -44,7 +44,11 @@ void setup()
 }
 
 void draw()
-{  
+{   
+  if(mode == 'd')
+  {
+    gameOver();
+  }
   if(mode == 'i')
   {
     playIntro();
@@ -61,6 +65,8 @@ void draw()
   {
     showMenu();
   }
+  
+  next = false;
 }
 
 void showMenu()
@@ -111,6 +117,20 @@ void updateEntities()
       b = new Battle((MonsterInstance)e,ent.indexOf(e));
       mode = 'b';
     }
+  }
+}
+
+void gameOver()
+{
+  background(0);
+  fill(255);
+  text("GAME OVER",width/2-sideBorder,height/2);
+  if(next)
+  {
+    p.hp = p.maxHp;
+    p.mp = p.maxMp;
+    next = false;
+    mode = 'o';
   }
 }
 
