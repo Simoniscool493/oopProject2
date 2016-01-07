@@ -24,7 +24,7 @@ Battle b;
 Player p;
 
 void setup()
-{
+{  
   size(1000,1000);
   topBorder = height/8;
   sideBorder = width/8;
@@ -179,7 +179,7 @@ void keyTyped()
 {
   if(mode == 'b')
   {
-    if(b.turn == 'p')
+    if(b.turn == 'p'||b.turn == 'r')
     {
       if(key == 'w')
       {

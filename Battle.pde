@@ -4,7 +4,6 @@ class Battle
     
   String curBattleText;
   char[] buffer;
-  boolean inMenu = false;
   int phase;
   int textDepth;
   int index;
@@ -16,10 +15,12 @@ class Battle
   // e = enemy turn
   // p = player turn
   // q = player action
+  // r = sub menu
   // f = enemy action
 
   String[] turnMenu = {"Attack","Magic","Item","Run"};
   String[] magicMenu = {"Fire","Freeze","Thunder","Heal"};
+  String[] itemMenu = {"Nothing :("};
   
   float bSideBorder = sideBorder/2;
   float bTopBorder = topBorder/2;
@@ -86,14 +87,56 @@ class Battle
          if(battleNext)
          {
             battleNext = false;
-            turn = 'q';
+            if(menuPoint==1||menuPoint==2)
+            {
+              if(menuPoint==1)
+              {
+                menu = 'm';
+              }
+              else
+              {
+                menu = 'i';
+              }
+              
+              turn = 'r';
+            }
+            else
+            {
+              turn = 'q';
+            } 
          }
       }
       else if(turn == 'q')
       {
-         {
-           doSelected(menuPoint);
-         }
+        if(menu == 'm')
+        {
+          doMagic(menuPoint);
+        }
+        else
+        {
+          doSelected(menuPoint);
+        }
+      }
+      else if(turn=='r')
+      {
+        if(key == 'q')
+        {
+          turn = 'p';
+        }
+        
+        if(menu=='m')
+        {
+           showMenu(magicMenu);
+           if(battleNext)
+           {
+             turn = 'q';
+             battleNext = false;
+           }
+        }
+        else if(menu=='i')
+        {
+          showMenu(itemMenu);
+        }
       }
       else if(turn=='e')
       {
@@ -174,26 +217,35 @@ class Battle
     {
       basicAttack();
     }
-    if(menuPoint==1)
-    {
-      doMagic();
-    }
-    if(menuPoint==2)
-    {
-      useItem();
-    }
     if(menuPoint==3)
     {
       run();
     }
   }
   
-  void doMagic()
+  void doMagic(int num)
   {
     if(textDepth==0)
     {
-      showMenu(magicMenu);
+      sequentialText("You cast " + magicMenu[num] + "!",1);
     }
+    if(num==0)
+    {
+     
+    }
+    else if(num==1)
+    {
+      
+    }
+    else if(num==2)
+    {
+      
+    }
+    else if(num==3)
+    {
+      
+    }
+
   }
   
   void useItem()
@@ -314,8 +366,7 @@ class Battle
   void showMenu(String[] points)
   {
     int l = points.length;
-    inMenu = true;
-   
+    
     if(menuPoint>l-1)
     {
       menuPoint=0;
