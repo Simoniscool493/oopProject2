@@ -4,10 +4,10 @@ class Battle
     
   String curBattleText;
   char[] buffer;
-  int phase;
   int textDepth;
   int index;
   int damage;
+  int counter = 0;
   char turn = 's';
   char menu = 'n';
   
@@ -19,7 +19,7 @@ class Battle
   // f = enemy action
 
   String[] turnMenu = {"Attack","Magic","Item","Run"};
-  String[] magicMenu = {"Fire","Freeze","Thunder","Heal"};
+  String[] magicMenu = {"Fire","Thunder","Heal"};
   String[] itemMenu = {"Nothing :("};
   
   float bSideBorder = sideBorder/2;
@@ -35,7 +35,6 @@ class Battle
   {
     enemy = m;
     index = ind;
-    phase = 1;
     textDepth = 0;
     buffer = "#".toCharArray();
     curBattleText = "";
@@ -51,7 +50,6 @@ class Battle
     showOwnStats();
     showEnemyStats();
     
-    text(phase,30,30);
     text(turn,50,30);
     text(textDepth,70,30);
 
@@ -229,9 +227,11 @@ class Battle
     {
       sequentialText("You cast " + magicMenu[num] + "!",1);
     }
+    if(textDepth==1)
+    {
     if(num==0)
     {
-     
+      animateFire();
     }
     else if(num==1)
     {
@@ -241,11 +241,23 @@ class Battle
     {
       
     }
-    else if(num==3)
-    {
-      
     }
 
+  }
+  
+  void animateFire()
+  {
+    fireBall(width/2,height/2,2); 
+  }
+  
+  void fireBall(float x,float y,int odds)
+  {
+    fill(255,128,0);
+    ellipse(x,y,30,30);
+    if(random(0)==0)
+    {
+      fireBall(x+(random(6)-3),y+(random(6)-3),odds+1);
+    }
   }
   
   void useItem()

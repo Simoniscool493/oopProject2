@@ -4,6 +4,12 @@ ArrayList<MonsterType> mon = new ArrayList<MonsterType>();
 boolean[] keys = new boolean[512];
 PImage background;
 PImage title;
+
+PImage topDoor;
+PImage bottomDoor;
+PImage leftDoor;
+PImage rightDoor;
+
 float topBorder;
 float sideBorder;
 char mode;
@@ -34,13 +40,26 @@ void setup()
   
   makePlayer();
   loadMonsters();
-    
+  loadSprites();
+  
   makeMonster(2);
   b = new Battle((MonsterInstance)ent.get(0),1);
 
+  makeDoors();
+  
+  mode = 'i';
+}
+
+void loadSprites()
+{
   title = loadImage("title.png");
   background = loadImage("wall1.png");
-  mode = 'i';
+  
+  topDoor = loadImage("topDoor.png");;
+  bottomDoor = loadImage("bottomDoor.png");;
+  leftDoor = loadImage("leftDoor.png");;
+  rightDoor = loadImage("rightDoor.png");;
+
 }
 
 void draw()
@@ -222,6 +241,19 @@ void keyTyped()
   {
     makeMonster((int)random(3));
   }
+}
+
+void makeDoors()
+{
+  StaticEntity td = new StaticEntity(topDoor,(float)width/2,topBorder);
+  StaticEntity bd = new StaticEntity(bottomDoor,width/2,height-topBorder);
+  StaticEntity ld = new StaticEntity(leftDoor,sideBorder,height/2);
+  StaticEntity rd = new StaticEntity(rightDoor,width-sideBorder,height/2);
+  ent.add(td);
+  ent.add(bd);
+  ent.add(ld);
+  ent.add(rd);
+
 }
 
 void playIntro()
