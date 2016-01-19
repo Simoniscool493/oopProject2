@@ -25,9 +25,9 @@ class Player extends MobileEntity
     mercyInvincibility = 0;
     
     maxHp = 10;
-    hp = 1;
+    hp = 10;
     maxMp = 10;
-    mp = 2;
+    mp = 10;
     atk = 5;
     def = 5;
     speed = 100;

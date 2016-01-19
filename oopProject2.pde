@@ -55,10 +55,10 @@ void loadSprites()
   title = loadImage("title.png");
   background = loadImage("wall1.png");
   
-  topDoor = loadImage("topDoor.png");;
-  bottomDoor = loadImage("bottomDoor.png");;
-  leftDoor = loadImage("leftDoor.png");;
-  rightDoor = loadImage("rightDoor.png");;
+  topDoor = loadImage("doors/topDoor.png");;
+  bottomDoor = loadImage("doors/bottomDoor.png");;
+  leftDoor = loadImage("doors/leftDoor.png");;
+  rightDoor = loadImage("doors/rightDoor.png");;
 
 }
 
@@ -245,10 +245,10 @@ void keyTyped()
 
 void makeDoors()
 {
-  StaticEntity td = new StaticEntity(topDoor,(float)width/2,topBorder);
-  StaticEntity bd = new StaticEntity(bottomDoor,width/2,height-topBorder);
-  StaticEntity ld = new StaticEntity(leftDoor,sideBorder,height/2);
-  StaticEntity rd = new StaticEntity(rightDoor,width-sideBorder,height/2);
+  StaticEntity td = new StaticEntity(topDoor,(float)width/2,topBorder/2);
+  StaticEntity bd = new StaticEntity(bottomDoor,width/2,height-topBorder/2);
+  StaticEntity ld = new StaticEntity(leftDoor,sideBorder/2,height/2);
+  StaticEntity rd = new StaticEntity(rightDoor,width-sideBorder/2,height/2);
   ent.add(td);
   ent.add(bd);
   ent.add(ld);
