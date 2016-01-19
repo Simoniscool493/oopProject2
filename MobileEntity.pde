@@ -13,6 +13,7 @@ class MobileEntity extends Entity
   
   void move()
   {
+    
   }
 
 }

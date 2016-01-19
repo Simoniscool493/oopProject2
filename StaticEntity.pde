@@ -2,19 +2,17 @@ class StaticEntity extends Entity
 {
   StaticEntity()
   {
+    super();
   }
-  
+ 
   StaticEntity(float x,float y)
   {
-    posX = x;
-    posY = y;
+    super(x,y);
   }
   
   StaticEntity(PImage sp,float x,float y)
   {
-    posX = x;
-    posY = y;
-    sprite = sp;
+    super(sp,x,y);
   }
 
   void update()

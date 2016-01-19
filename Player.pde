@@ -1,13 +1,17 @@
 class Player extends MobileEntity
 {
   String name;
+  
   int lv;
   int exp;
   int expToLvUp;
+  
   int hp;
   int maxHp;
+  
   int mp;
   int maxMp;
+  
   int atk;
   int def;
   int speed;
@@ -17,7 +21,7 @@ class Player extends MobileEntity
   Player(float x,float y)
   {
     name = "Bob";
-    lv = 3;
+    lv = 1;
     exp = 0;
     posX=x;
     posY=y;

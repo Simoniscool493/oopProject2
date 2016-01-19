@@ -22,6 +22,7 @@ float introTitleHeight;
 // m = menu
 // b = battle
 // d = death
+
 int menuPoint = 0;
 boolean battleNext = false;
 boolean next = false;
@@ -128,7 +129,11 @@ void updateEntities()
 {
   for(Entity e:ent)
   {
-    e.move();
+    if(e instanceof MobileEntity)
+    {
+      ((MobileEntity)e).move();
+    }
+    
     e.update();
   
     if(e instanceof MonsterInstance && p.isTouching(e) && p.mercyInvincibility == 0)
@@ -253,7 +258,6 @@ void makeDoors()
   ent.add(bd);
   ent.add(ld);
   ent.add(rd);
-
 }
 
 void playIntro()
@@ -272,7 +276,6 @@ void playIntro()
   {
     introTitleHeight+=5;
   }
-  
   
   if(next)
   {

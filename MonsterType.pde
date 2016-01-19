@@ -14,10 +14,6 @@ class MonsterType
   MonsterType()
   {
   }
-  
-  void printDetails()
-  {
-    println(id,name,hp,atk,def,speed);
-  }
+
 }
 

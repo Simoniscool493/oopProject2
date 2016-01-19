@@ -3,11 +3,9 @@ class Battle
   MonsterInstance enemy;
     
   String curBattleText;
-  char[] buffer;
   int textDepth;
   int index;
   int damage;
-  int counter = 0;
   char turn = 's';
   char menu = 'n';
   
@@ -36,7 +34,6 @@ class Battle
     enemy = m;
     index = ind;
     textDepth = 0;
-    buffer = "#".toCharArray();
     curBattleText = "";
     menuPoint = 0;
   }

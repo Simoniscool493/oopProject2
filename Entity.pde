@@ -4,6 +4,7 @@ abstract class Entity
   float posY;
   float hitBox;
   PImage sprite;
+  char type;
   
   Entity()
   {
@@ -36,11 +37,6 @@ abstract class Entity
   void update()
   {
     image(sprite,posX,posY);   
-  }
-  
-  void move()
-  {
-    
   }
   
 }

@@ -11,7 +11,7 @@ class MonsterInstance extends MobileEntity
     sprite = m.overworldSprite;
     movementSpeed = 10;
     hitBox = 30;
-    hp = template.hp-1;
+    hp = template.hp;
   }
   
   void update()
