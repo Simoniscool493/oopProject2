@@ -154,7 +154,7 @@ void updateEntities()
     }
     
     if(e.type > 10 && e.type < 53 && p.isTouching(e))
-    {  
+    { 
        changeRoom(e.type);
     }
     
@@ -186,7 +186,7 @@ void tryRoom(int x,int y)
   boolean used = false;
   for(Room rm:rooms)
   {
-    if(rm.locX == r.locX+x && rm.locY == r.locY+y)
+    if(rm.locX == r.locX+x && rm.locY == r.locY+y && !used)
     {
       r = rm;
       used = true;
@@ -195,14 +195,15 @@ void tryRoom(int x,int y)
   
   if(!used)
   {
+    //println(r.locX+x,r.locY+y + " created");
     Room room = new Room(r.locX+x,r.locY+y);
     rooms.add(room);
     r = room;
-    p.posX = width/2;
-    p.posY = height/2;
-    println(r.locX+x,r.locY+y);
   } 
   
+   p.posX = width/2;
+   p.posY = height/2;
+
 }
 
 

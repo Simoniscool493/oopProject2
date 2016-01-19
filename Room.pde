@@ -18,7 +18,7 @@ class Room
   {
     for(int i=0;i<roomNumMonsters;i++)
     {
-      makeMonster((int)random(mon.size()));
+      //makeMonster((int)random(mon.size()));
     }
     
   }
