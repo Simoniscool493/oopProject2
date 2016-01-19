@@ -1,5 +1,7 @@
 ArrayList<Entity> ent = new ArrayList<Entity>();
 ArrayList<MonsterType> mon = new ArrayList<MonsterType>();
+ArrayList<Room> rooms = new ArrayList<Room>();
+ArrayList<PImage> backgrounds = new ArrayList<PImage>();
 
 boolean[] keys = new boolean[512];
 PImage background;
@@ -27,8 +29,9 @@ int menuPoint = 0;
 boolean battleNext = false;
 boolean next = false;
 
-Battle b;
+Battle b = new Battle();
 Player p;
+Room r;
 
 void setup()
 {  
@@ -42,13 +45,18 @@ void setup()
   makePlayer();
   loadMonsters();
   loadSprites();
+  initializeRoom();
   
-  makeMonster(2);
-  b = new Battle((MonsterInstance)ent.get(0),1);
-
   makeDoors();
   
   mode = 'i';
+}
+
+void initializeRoom()
+{
+  r = new Room(0,0);
+  rooms.add(r);
+  r.makeMonsters();
 }
 
 void loadSprites()
@@ -56,11 +64,10 @@ void loadSprites()
   title = loadImage("title.png");
   background = loadImage("wall1.png");
   
-  topDoor = loadImage("doors/topDoor.png");;
-  bottomDoor = loadImage("doors/bottomDoor.png");;
-  leftDoor = loadImage("doors/leftDoor.png");;
-  rightDoor = loadImage("doors/rightDoor.png");;
-
+  topDoor = loadImage("doors/topDoor.png");
+  bottomDoor = loadImage("doors/bottomDoor.png");
+  leftDoor = loadImage("doors/leftDoor.png");
+  rightDoor = loadImage("doors/rightDoor.png");
 }
 
 void draw()
@@ -141,6 +148,11 @@ void updateEntities()
       b = new Battle((MonsterInstance)e,ent.indexOf(e));
       mode = 'b';
     }
+    if(e.type == 'd' && p.isTouching(e))
+    {
+      print("door");
+    }
+
   }
 }
 
@@ -250,10 +262,10 @@ void keyTyped()
 
 void makeDoors()
 {
-  StaticEntity td = new StaticEntity(topDoor,(float)width/2,topBorder/2);
-  StaticEntity bd = new StaticEntity(bottomDoor,width/2,height-topBorder/2);
-  StaticEntity ld = new StaticEntity(leftDoor,sideBorder/2,height/2);
-  StaticEntity rd = new StaticEntity(rightDoor,width-sideBorder/2,height/2);
+  StaticEntity td = new StaticEntity(topDoor,(float)width/2,topBorder/2,'d');
+  StaticEntity bd = new StaticEntity(bottomDoor,width/2,height-topBorder/2,'d');
+  StaticEntity ld = new StaticEntity(leftDoor,sideBorder/2,height/2,'d');
+  StaticEntity rd = new StaticEntity(rightDoor,width-sideBorder/2,height/2,'d');
   ent.add(td);
   ent.add(bd);
   ent.add(ld);

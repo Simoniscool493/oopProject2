@@ -10,9 +10,9 @@ class StaticEntity extends Entity
     super(x,y);
   }
   
-  StaticEntity(PImage sp,float x,float y)
+  StaticEntity(PImage sp,float x,float y,char t)
   {
-    super(sp,x,y);
+    super(sp,x,y,t);
   }
 
   void update()

@@ -29,6 +29,11 @@ class Battle
   float bMainMenuWidth = width-(bSideBorder*2);
   float bMainMenuHeight = height/3;
   
+  Battle()
+  {
+    
+  }
+  
   Battle(MonsterInstance m,int ind)
   {
     enemy = m;

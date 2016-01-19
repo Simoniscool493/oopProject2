@@ -17,11 +17,13 @@ abstract class Entity
     posY = y;
   }
   
-  Entity(PImage sp,float x,float y)
+  Entity(PImage sp,float x,float y,char t)
   {
     posX = x;
     posY = y;
     sprite = sp;
+    type = t;
+    hitBox = sideBorder/2.5;
   }
   
   boolean isTouching(Entity e)
