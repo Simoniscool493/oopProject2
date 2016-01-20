@@ -40,5 +40,4 @@ abstract class Entity
   {
     image(sprite,posX,posY);   
   }
-  
 }

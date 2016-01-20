@@ -127,13 +127,13 @@ void makePlayer()
 
 void doOverworld()
 {
-    imageMode(CORNER);
-    background(147,91,62);
-    image(background,0,0,width,height);
-    imageMode(CENTER);
+  imageMode(CORNER);
+  background(147,91,62);
+  image(background,0,0,width,height);
+  imageMode(CENTER);
 
-    updateEntities();
-    updatePlayer();
+  updateEntities();
+  updatePlayer();
 }
 
 void updateEntities()
@@ -157,12 +157,12 @@ void updateEntities()
     { 
        changeRoom(e.type);
     }
-    
   }
 }
 
 void changeRoom(char c)
 {
+  print(c);
   if(c == '1')
   {
     tryRoom(0,-1);
@@ -199,14 +199,35 @@ void tryRoom(int x,int y)
     Room room = new Room(r.locX+x,r.locY+y);
     rooms.add(room);
     r = room;
-  } 
+  }
   
-   p.posX = width/2;
-   p.posY = height/2;
-
+  relocatePlayer(x,y); 
 }
 
-
+void relocatePlayer(int x,int y)
+{
+  if(x == 1)
+  {
+    p.posX = sideBorder*1.2;
+    p.posY = height/2;
+  }
+  else if(x == -1)
+  {
+    p.posX = width-sideBorder*1.2;
+    p.posY = height/2;
+  }
+  else if(y == 1)
+  {
+    p.posX = width/2;
+    p.posY = topBorder*1.2;
+  }
+  else if(y == -1)
+  {
+    p.posX = width/2;
+    p.posY = height-topBorder*1.2;
+  }
+}
+  
 
 void makeDoors()
 {
