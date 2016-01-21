@@ -16,7 +16,7 @@ float topBorder;
 float sideBorder;
 char mode;
 
-float introCircleSize;
+float introCircleSize = 0;
 float introTitleHeight;
 
 // i = intro 
@@ -28,6 +28,7 @@ float introTitleHeight;
 int menuPoint = 0;
 boolean battleNext = false;
 boolean next = false;
+boolean newRoom = false;
 
 Battle b = new Battle();
 Player p;
@@ -39,9 +40,7 @@ void setup()
   topBorder = height/8;
   sideBorder = width/8;
   textSize(height/33);
-  
-  introCircleSize = 0;
-  
+    
   makePlayer();
   loadMonsters();
   loadSprites();
@@ -52,28 +51,8 @@ void setup()
   mode = 'i';
 }
 
-void initializeRoom()
-{
-  r = new Room(0,0);
-  rooms.add(r);
-  r.makeMonsters();
-}
-
-void loadSprites()
-{
-  title = loadImage("title.png");
-  background = loadImage("wall1.png");
-  
-  topDoor = loadImage("doors/topDoor.png");
-  bottomDoor = loadImage("doors/bottomDoor.png");
-  leftDoor = loadImage("doors/leftDoor.png");
-  rightDoor = loadImage("doors/rightDoor.png");
-}
-
 void draw()
-{
-  
-  
+{ 
   if(mode == 'd')
   {
     gameOver();
@@ -99,6 +78,65 @@ void draw()
   
   next = false;
 }
+
+void initializeRoom()
+{
+  r = new Room(0,0);
+  rooms.add(r);
+  r.makeMonsters();
+}
+
+void clearMonsters()
+{
+  int size = ent.size();
+  int i = 0;
+ 
+  while(i<ent.size())
+  {
+    if(ent.get(i) instanceof MonsterInstance)
+    {
+      ent.remove(i);
+    }
+    else
+    {
+      i++;
+    }
+  }
+}
+
+void loadSprites()
+{
+  title = loadImage("title.png");
+  background = loadImage("wall1.png");
+  
+  topDoor = loadImage("doors/topDoor.png");
+  bottomDoor = loadImage("doors/bottomDoor.png");
+  leftDoor = loadImage("doors/leftDoor.png");
+  rightDoor = loadImage("doors/rightDoor.png");
+  
+  loadBackgrounds();
+}
+
+void loadBackgrounds()
+{
+  boolean more = true;
+  int i = 0;
+  
+  while(more)
+  {
+    PImage b = loadImage("background" + i + ".png");
+    if(b != null)
+    {
+      backgrounds.add(b);
+      i++;
+    }
+    else
+    {
+      more = false;
+    }
+  }
+}
+
 
 void showMenu()
 {
@@ -154,9 +192,16 @@ void updateEntities()
     }
     
     if(e.type > 10 && e.type < 53 && p.isTouching(e))
-    { 
-       changeRoom(e.type);
+    {
+      newRoom = true;
+      changeRoom(e.type);
     }
+  }
+  
+  if(newRoom)
+  {
+    clearMonsters();
+    newRoom = false;
   }
 }
 
