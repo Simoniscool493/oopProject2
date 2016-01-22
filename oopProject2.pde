@@ -82,8 +82,9 @@ void draw()
 void initializeRoom()
 {
   r = new Room(0,0);
-  rooms.add(r);
+  r.background = 0;
   r.makeMonsters();
+  rooms.add(r);
 }
 
 void clearMonsters()
@@ -107,7 +108,6 @@ void clearMonsters()
 void loadSprites()
 {
   title = loadImage("title.png");
-  background = loadImage("wall1.png");
   
   topDoor = loadImage("doors/topDoor.png");
   bottomDoor = loadImage("doors/bottomDoor.png");
@@ -167,7 +167,7 @@ void doOverworld()
 {
   imageMode(CORNER);
   background(147,91,62);
-  image(background,0,0,width,height);
+  image(backgrounds.get(r.background),0,0,width,height);
   imageMode(CENTER);
 
   updateEntities();
@@ -194,6 +194,7 @@ void updateEntities()
     if(e.type > 10 && e.type < 53 && p.isTouching(e))
     {
       newRoom = true;
+      p.mercyInvincibility = 10;
       changeRoom(e.type);
     }
   }

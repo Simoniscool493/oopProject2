@@ -32,7 +32,7 @@ class Player extends MobileEntity
     hp = 10;
     maxMp = 10;
     mp = 10;
-    atk = 5;
+    atk = 5000000;
     def = 5;
     speed = 100;
     expToLvUp = 100;

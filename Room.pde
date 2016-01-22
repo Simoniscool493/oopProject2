@@ -1,6 +1,6 @@
 class Room
 {
-  PImage background;
+  int background;
   int locX;
   int locY;
   boolean boss;
@@ -11,7 +11,7 @@ class Room
   {
     locX = x;
     locY = y;
-    
+    background=(int)random(backgrounds.size());
   }
   
   void makeMonsters()
@@ -20,6 +20,7 @@ class Room
     {
       //makeMonster((int)random(mon.size()));
     }
-    
   }
+  
+  
 }
