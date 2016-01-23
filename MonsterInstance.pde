@@ -1,6 +1,5 @@
-class MonsterInstance extends MobileEntity
+class MonsterInstance extends FightingEntity
 {
-  int hp;
   int direction;
   MonsterType template;
     
@@ -71,19 +70,8 @@ class MonsterInstance extends MobileEntity
        if(b.sequentialText(template.name + " attacks!",1))
        {
          b.damage = (template.atk/p.def);
-         if(b.damage<1)
-         {
-           b.damage=1;
-         }
-         if(b.damage>p.hp)
-         {
-           p.hp=0;
-         }
-         else
-         {
-           p.hp-=b.damage;
-         }
-       }
+         b.damageEntity(p);
+        }
     }
     if(b.textDepth==1)
     {

@@ -227,38 +227,59 @@ class Battle
   {
     if(textDepth==0)
     {
-      sequentialText("You cast " + magicMenu[num] + "!",1);
+      animateMagic(num);
+      if(sequentialText("You cast " + magicMenu[num] + "!",1))
+      {
+        damage = getMagicDamage(num);
+      }
     }
-    if(textDepth==1)
+    if(textDepth==1 && num!= 2)
     {
+      if(sequentialText("You dealt " + damage + " damage!",2))
+      {
+        damageEntity(enemy);
+        textDepth = 0;
+      }
+    }
+  }
+  
+  int getMagicDamage(int num)
+  {
     if(num==0)
     {
-      animateFire();
+      return (p.atk * 3)/enemy.template.def;
     }
-    else if(num==1)
+    if(num==1)
     {
-      
+      return p.atk*4;
     }
-    else if(num==2)
-    {
-      
-    }
-    }
-
+    
+    return 0;
   }
   
-  void animateFire()
+  void damageEntity(FightingEntity fe)
   {
-    fireBall(width/2,height/2,2); 
+     if(damage<1)
+     {
+       damage = 1;
+     }
+    
+     if(damage>fe.hp)
+     {
+       fe.hp=0;
+     }
+     else
+     {
+       fe.hp-=damage;
+     }
   }
   
-  void fireBall(float x,float y,int odds)
+  void animateMagic(int n)
   {
-    fill(255,128,0);
-    ellipse(x,y,30,30);
-    if(random(0)==0)
+    if(n==0)
     {
-      fireBall(x+(random(6)-3),y+(random(6)-3),odds+1);
+      fill(256,64,64);
+      ellipse(width/2,height/2,sideBorder,sideBorder);
     }
   }
   
@@ -298,14 +319,7 @@ class Battle
     {
       if(sequentialText("you dealt a crazy "+ damage +" damage!",2))
       {
-         if(damage>enemy.hp)
-         {
-           enemy.hp=0;
-         }
-         else
-         {
-           enemy.hp-=damage;
-         }
+        damageEntity(enemy);
       }
       if(textDepth==2)
       {

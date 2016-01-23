@@ -1,4 +1,4 @@
-class Player extends MobileEntity
+class Player extends FightingEntity
 {
   String name;
   
@@ -6,7 +6,6 @@ class Player extends MobileEntity
   int exp;
   int expToLvUp;
   
-  int hp;
   int maxHp;
   
   int mp;
@@ -74,6 +73,7 @@ class Player extends MobileEntity
       atk+=5;
       def+=5;
       speed+=5;
+      hp+=5;
       maxHp+=5;
       expToLvUp = (lv*100);
     }
