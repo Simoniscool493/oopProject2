@@ -208,7 +208,6 @@ void updateEntities()
 
 void changeRoom(char c)
 {
-  print(c);
   if(c == '1')
   {
     tryRoom(0,-1);
@@ -241,7 +240,6 @@ void tryRoom(int x,int y)
   
   if(!used)
   {
-    //println(r.locX+x,r.locY+y + " created");
     Room room = new Room(r.locX+x,r.locY+y);
     rooms.add(room);
     r = room;

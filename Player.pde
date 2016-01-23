@@ -31,7 +31,7 @@ class Player extends FightingEntity
     hp = 10;
     maxMp = 10;
     mp = 10;
-    atk = 5000000;
+    atk = 5;
     def = 5;
     speed = 100;
     expToLvUp = 100;
@@ -75,6 +75,8 @@ class Player extends FightingEntity
       speed+=5;
       hp+=5;
       maxHp+=5;
+      mp+=2;
+      maxMp+=2;
       expToLvUp = (lv*100);
     }
   }

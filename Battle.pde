@@ -6,8 +6,10 @@ class Battle
   int textDepth;
   int index;
   int damage;
+  boolean inSpell;
   char turn = 's';
   char menu = 'n';
+ 
   
   // s = starting state
   // e = enemy turn
@@ -18,6 +20,7 @@ class Battle
 
   String[] turnMenu = {"Attack","Magic","Item","Run"};
   String[] magicMenu = {"Fire","Thunder","Heal"};
+  int[] magicCosts = {5,10,7};
   String[] itemMenu = {"Nothing :("};
   
   float bSideBorder = sideBorder/2;
@@ -41,6 +44,7 @@ class Battle
     textDepth = 0;
     curBattleText = "";
     menuPoint = 0;
+    inSpell = false;
   }
 
   void showBattleDetails()
@@ -58,7 +62,7 @@ class Battle
     showBattleSprite();
     showBattleText();
     
-    if(turn == 'p')
+    if(turn == 'p' && p.hp>0)
     {
       showMenu(turnMenu);
     }
@@ -110,7 +114,20 @@ class Battle
       {
         if(menu == 'm')
         {
-          doMagic(menuPoint);
+          if(magicCosts[menuPoint]>p.mp && !inSpell)
+          {
+            if(sequentialText("You don't have enough mp to cast " + magicMenu[menuPoint] + "!",0))
+            {
+              curBattleText = "";
+              turn = 'p';
+              menu = 'n';
+            }
+          }
+          else
+          {
+            inSpell = true;
+            doMagic(menuPoint);
+          }
         }
         else
         {
@@ -145,6 +162,23 @@ class Battle
     }
   }
  
+  void nextTurn()
+  {
+    textDepth = 0;
+    damage = 0;
+    inSpell = false;
+    curBattleText = "";
+    
+    if(turn == 'e' || turn == 'f')
+    {
+      turn = 'p';
+    }
+    if(turn == 'q')
+    {
+      turn = 'e';
+    }
+  }
+  
   void startBattle()
   {
     battleText(enemy.template.battleStartText);
@@ -231,6 +265,7 @@ class Battle
       if(sequentialText("You cast " + magicMenu[num] + "!",1))
       {
         damage = getMagicDamage(num);
+        p.mp-=magicCosts[num];
       }
     }
     if(textDepth==1 && num!= 2)
@@ -238,7 +273,7 @@ class Battle
       if(sequentialText("You dealt " + damage + " damage!",2))
       {
         damageEntity(enemy);
-        textDepth = 0;
+        nextTurn();
       }
     }
   }
@@ -292,12 +327,11 @@ class Battle
   {
     if(textDepth == 0)
     {
-      sequentialText("You ran away",1);
-    }
-    if(textDepth == 1)
-    {
-      p.mercyInvincibility = 120;
-      mode = 'o';
+      if(sequentialText("You ran away",1))
+      {
+        p.mercyInvincibility = 120;
+        mode = 'o';
+      }
     }
   }
 
@@ -308,11 +342,6 @@ class Battle
        if(sequentialText(p.name + " attacks!",1))
        {
          damage = (p.atk/enemy.template.def);
-         
-         if(damage<1)
-         {
-           damage=1;
-         }
        }
     }
     if(textDepth==1)
@@ -320,11 +349,7 @@ class Battle
       if(sequentialText("you dealt a crazy "+ damage +" damage!",2))
       {
         damageEntity(enemy);
-      }
-      if(textDepth==2)
-      {
-        turn = 'e';
-        textDepth = 0;
+        nextTurn();
       }
     }
   }
@@ -389,7 +414,6 @@ class Battle
      fill(0,255,0);
      rect(width-sideBorder/2-width/2.5+sideBorder/8,topBorder/2+topBorder/8,mappedHP,height/21);
   }
-  
   
   void showMenu(String[] points)
   {

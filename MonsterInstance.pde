@@ -69,19 +69,16 @@ class MonsterInstance extends FightingEntity
     {
        if(b.sequentialText(template.name + " attacks!",1))
        {
-         b.damage = (template.atk/p.def);
-         b.damageEntity(p);
-        }
+          b.damage = (template.atk/p.def);
+       }
     }
     if(b.textDepth==1)
     {
-      b.sequentialText("you took a calamatious "+ b.damage +" damage!",2);
-    }
-    if(b.textDepth==2)
-    {
-      b.battleText(" ");
-      b.turn = 'p';
-      b.textDepth = 0;
+      if(b.sequentialText("you took a calamatious "+ b.damage +" damage!",2))
+      {
+         b.damageEntity(p);
+         b.nextTurn();
+      }
     }
   }
 }

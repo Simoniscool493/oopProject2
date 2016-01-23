@@ -7,7 +7,7 @@ abstract class Entity
   
   Entity()
   {
-    this(width/3,height/3);
+    pos = new PVector(width/4*((int)random(3)+1),height/4*((int)random(3)+1));
   }
   
   Entity(float x,float y)
