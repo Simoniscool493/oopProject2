@@ -6,19 +6,32 @@ class Room
   boolean boss;
   boolean shop;
   int roomNumMonsters = 3;
+  int numTypeMonsters = 2;
+  int[] monstersInRoom;
   
   Room(int x,int y)
   {
     locX = x;
     locY = y;
+    monstersInRoom = new int[numTypeMonsters];
     background=(int)random(backgrounds.size());
+    
+    chooseMonsters();
   }
   
   void makeMonsters()
   {
     for(int i=0;i<roomNumMonsters;i++)
     {
-      //makeMonster((int)random(mon.size()));
+      makeMonster(monstersInRoom[(int)random(numTypeMonsters)]);
+    }
+  }
+  
+  void chooseMonsters()
+  {
+    for(int i = 0;i<numTypeMonsters;i++)
+    {
+      monstersInRoom[i] = (int)random(mon.size());
     }
   }
   

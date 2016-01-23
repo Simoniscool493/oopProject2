@@ -137,7 +137,6 @@ void loadBackgrounds()
   }
 }
 
-
 void showMenu()
 {
   fill(128);
@@ -203,6 +202,7 @@ void updateEntities()
   {
     clearMonsters();
     newRoom = false;
+    r.makeMonsters();
   }
 }
 
@@ -387,7 +387,7 @@ void keyTyped()
   
   if(key == 'm')
   {
-    makeMonster((int)random(3));
+    makeMonster(r.monstersInRoom[(int)random(r.numTypeMonsters)]);
   }
 }
 
