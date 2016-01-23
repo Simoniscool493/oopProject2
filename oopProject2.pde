@@ -254,23 +254,23 @@ void relocatePlayer(int x,int y)
 {
   if(x == 1)
   {
-    p.posX = sideBorder*1.2;
-    p.posY = height/2;
+    p.pos.x = sideBorder*1.2;
+    p.pos.y = height/2;
   }
   else if(x == -1)
   {
-    p.posX = width-sideBorder*1.2;
-    p.posY = height/2;
+    p.pos.x = width-sideBorder*1.2;
+    p.pos.y = height/2;
   }
   else if(y == 1)
   {
-    p.posX = width/2;
-    p.posY = topBorder*1.2;
+    p.pos.x = width/2;
+    p.pos.y = topBorder*1.2;
   }
   else if(y == -1)
   {
-    p.posX = width/2;
-    p.posY = height-topBorder*1.2;
+    p.pos.x = width/2;
+    p.pos.y = height-topBorder*1.2;
   }
 }
   

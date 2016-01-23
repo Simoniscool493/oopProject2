@@ -1,7 +1,6 @@
 abstract class Entity
 {
-  float posX;
-  float posY;
+  PVector pos;
   float hitBox;
   PImage sprite;
   char type;
@@ -13,14 +12,12 @@ abstract class Entity
   
   Entity(float x,float y)
   {
-    posX = x;
-    posY = y;
+    pos = new PVector(x,y);
   }
   
   Entity(PImage sp,float x,float y,char t)
   {
-    posX = x;
-    posY = y;
+    pos = new PVector(x,y);
     sprite = sp;
     type = t;
     hitBox = sideBorder/2.5;
@@ -28,7 +25,7 @@ abstract class Entity
   
   boolean isTouching(Entity e)
   {
-    if(posX+hitBox >= e.posX-e.hitBox && posX-hitBox <= e.posX+e.hitBox && posY+hitBox >= e.posY-e.hitBox && posY-hitBox <= e.posY+e.hitBox)
+    if(pos.x+hitBox >= e.pos.x-e.hitBox && pos.x-hitBox <= e.pos.x+e.hitBox && pos.y+hitBox >= e.pos.y-e.hitBox && pos.y-hitBox <= e.pos.y+e.hitBox)
     {
       return true;
     }
@@ -38,6 +35,6 @@ abstract class Entity
   
   void update()
   {
-    image(sprite,posX,posY);   
+    image(sprite,pos.x,pos.y);   
   }
 }

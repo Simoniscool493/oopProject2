@@ -23,8 +23,8 @@ class Player extends MobileEntity
     name = "Bob";
     lv = 1;
     exp = 0;
-    posX=x;
-    posY=y;
+    pos.x=x;
+    pos.y=y;
     hitBox=25;
     mercyInvincibility = 0;
     
@@ -43,26 +43,26 @@ class Player extends MobileEntity
   void update()
   {
     fill(128);
-    ellipse(posX,posY,50,50);
+    ellipse(pos.x,pos.y,50,50);
   }
   
   void move()
   {
-    if (keys['W']&&posY>topBorder)
+    if (keys['W']&&pos.y>topBorder)
     {
-      posY-=movementSpeed;
+      pos.y-=movementSpeed;
     }      
-    if (keys['A']&&posX>sideBorder)
+    if (keys['A']&&pos.x>sideBorder)
     {
-      posX-=movementSpeed;
+      pos.x-=movementSpeed;
     }      
-    if (keys['S']&&posY<height-topBorder)
+    if (keys['S']&&pos.y<height-topBorder)
     {
-      posY+=movementSpeed;
+      pos.y+=movementSpeed;
     }      
-    if (keys['D']&&posX<width-sideBorder)
+    if (keys['D']&&pos.x<width-sideBorder)
     {
-      posX+=movementSpeed;
+      pos.x+=movementSpeed;
     }      
   }
 

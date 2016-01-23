@@ -16,7 +16,7 @@ class MonsterInstance extends MobileEntity
   
   void update()
   {
-    image(sprite,posX,posY);
+    image(sprite,pos.x,pos.y);
   }
   
   void move()
@@ -31,30 +31,30 @@ class MonsterInstance extends MobileEntity
     }
     if(direction == 1)
     {
-      if(posY<height-topBorder)
+      if(pos.y<height-topBorder)
       {
-        posY+=movementSpeed;
+        pos.y+=movementSpeed;
       }
     }
     if(direction == 2)
     {
-      if(posX>sideBorder)
+      if(pos.x>sideBorder)
       {
-        posX-=movementSpeed;
+        pos.x-=movementSpeed;
       }
     }
     if(direction == 3)
     {
-      if(posX<width-sideBorder)
+      if(pos.x<width-sideBorder)
       {
-        posX+=movementSpeed;
+        pos.x+=movementSpeed;
       }
     }
     if(direction == 4)
     {
-      if(posY>topBorder)
+      if(pos.y>topBorder)
       {
-        posY-=movementSpeed;
+        pos.y-=movementSpeed;
       }
     }
   }
