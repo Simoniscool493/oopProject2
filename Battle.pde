@@ -17,6 +17,8 @@ class Battle
   // q = player action
   // r = sub menu
   // f = enemy action
+  // d = death
+  // w = win
 
   String[] turnMenu = {"Attack","Magic","Item","Run"};
   String[] magicMenu = {"Fire","Thunder","Heal"};
@@ -72,11 +74,11 @@ class Battle
   {
     showBattleDetails();
 
-    if(p.hp==0)
+    if(turn == 'd')
     {
       death();
     }
-    else if(enemy.hp==0)
+    else if(turn == 'w')
     {
       winBattle();
     }
@@ -169,13 +171,24 @@ class Battle
     inSpell = false;
     curBattleText = "";
     
-    if(turn == 'e' || turn == 'f')
+    if(p.hp<1)
     {
-      turn = 'p';
+      turn = 'd';
     }
-    if(turn == 'q')
+    else if(enemy.hp<1)
     {
-      turn = 'e';
+      turn = 'w';
+    }
+    else
+    {
+      if(turn == 'e' || turn == 'f')
+      {
+        turn = 'p';
+      }
+      if(turn == 'q')
+      {
+        turn = 'e';
+      }
     }
   }
   
@@ -205,14 +218,12 @@ class Battle
     }
     if(textDepth==1)
     {
-      sequentialText("You black out",2);
+      if(sequentialText("You black out",2))
+      {
+        mode = 'd';
+        ent.remove(index);
+      }
     }
-    if(textDepth==2)
-    {
-      mode = 'd';
-      ent.remove(index);
-    }
-      
   }
   
   void winBattle()
@@ -266,13 +277,13 @@ class Battle
       {
         damage = getMagicDamage(num);
         p.mp-=magicCosts[num];
+        damageEntity(enemy);
       }
     }
     if(textDepth==1 && num!= 2)
     {
       if(sequentialText("You dealt " + damage + " damage!",2))
       {
-        damageEntity(enemy);
         nextTurn();
       }
     }
@@ -342,13 +353,13 @@ class Battle
        if(sequentialText(p.name + " attacks!",1))
        {
          damage = (p.atk/enemy.template.def);
+         damageEntity(enemy);
        }
     }
     if(textDepth==1)
     {
       if(sequentialText("you dealt a crazy "+ damage +" damage!",2))
       {
-        damageEntity(enemy);
         nextTurn();
       }
     }
