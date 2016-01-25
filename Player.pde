@@ -41,7 +41,7 @@ class Player extends FightingEntity
   
   void update()
   {
-    fill(128);
+    fill(255);
     ellipse(pos.x,pos.y,50,50);
   }
   

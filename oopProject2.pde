@@ -3,7 +3,7 @@ ArrayList<MonsterType> mon = new ArrayList<MonsterType>();
 ArrayList<Room> rooms = new ArrayList<Room>();
 ArrayList<PImage> backgrounds = new ArrayList<PImage>();
 
-boolean[] keys = new boolean[512];
+boolean[] keys = new boolean[1024];
 PImage background;
 PImage title;
 

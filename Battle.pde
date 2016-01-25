@@ -6,10 +6,10 @@ class Battle
   int textDepth;
   int index;
   int damage;
+  int healed;
   boolean inSpell;
   char turn = 's';
   char menu = 'n';
- 
   
   // s = starting state
   // e = enemy turn
@@ -119,7 +119,7 @@ class Battle
         {
           if(magicCosts[menuPoint]>p.mp && !inSpell)
           {
-            if(sequentialText("You don't have enough mp to cast " + magicMenu[menuPoint] + "!",0))
+            if(sequentialText("You don't have enough MP to cast " + magicMenu[menuPoint] + "!",0))
             {
               curBattleText = "";
               turn = 'p';
@@ -172,6 +172,7 @@ class Battle
     damage = 0;
     inSpell = false;
     curBattleText = "";
+    menu = 'n';
     
     if(p.hp<1)
     {
@@ -270,6 +271,21 @@ class Battle
     }
   }
   
+  void getHealed()
+  {
+     healed = 9 + (int)random(3);
+     
+     if(p.maxHp - p.hp > healed)
+     {
+       healed = p.maxHp - p.hp;
+     }
+     else if(p.maxHp == p.hp)
+     {
+       healed = 0;
+     }
+       
+  }
+  
   void doMagic(int num)
   {
     if(textDepth==0)
@@ -277,14 +293,36 @@ class Battle
       animateMagic(num);
       if(sequentialText("You cast " + magicMenu[num] + "!",1))
       {
-        damage = getMagicDamage(num);
+        if(num==2)
+        {
+          getHealed();
+        }
+        else
+        {
+          damage = getMagicDamage(num);
+          damageEntity(enemy);
+        }
+        
         p.mp-=magicCosts[num];
-        damageEntity(enemy);
       }
     }
     if(textDepth==1 && num!= 2)
     {
       if(sequentialText("You dealt " + damage + " damage!",2))
+      {
+        nextTurn();
+      }
+    }
+    else if(textDepth==1 && healed == 0)
+    {
+      if(sequentialText("But you're already at full health?",2))
+      {
+        nextTurn();
+      }
+    }
+    else if(textDepth==1)
+    {
+      if(sequentialText("You healed " + healed + " HP!",2))
       {
         nextTurn();
       }
