@@ -60,6 +60,7 @@ class Battle
     
     text(turn,50,30);
     text(textDepth,70,30);
+    text(menu,90,30);
 
     showBattleSprite();
     showBattleText();
@@ -141,6 +142,7 @@ class Battle
         if(key == 'q')
         {
           turn = 'p';
+          menu = 'n';
         }
         
         if(menu=='m')

@@ -1,4 +1,4 @@
-class MobileEntity extends Entity
+abstract class MobileEntity extends Entity
 {
   float movementSpeed;
 
@@ -6,14 +6,8 @@ class MobileEntity extends Entity
   {
   }
   
-  void update()
-  {
-    
-  }
+  abstract void update();
   
-  void move()
-  {
-    
-  }
+  abstract void move();
 
 }

@@ -374,7 +374,7 @@ void keyTyped()
   {
     if(mode == 'm')
     {
-     mode = 'o';
+       mode = 'o';
     }
   }
     
