@@ -119,11 +119,12 @@ class Battle
         {
           if(magicCosts[menuPoint]>p.mp && !inSpell)
           {
+            showMpCost(menuPoint);
             if(sequentialText("You don't have enough MP to cast " + magicMenu[menuPoint] + "!",0))
             {
               curBattleText = "";
-              turn = 'p';
-              menu = 'n';
+              turn = 'r';
+              menu = 'm';
             }
           }
           else
@@ -148,6 +149,7 @@ class Battle
         if(menu=='m')
         {
            showMenu(magicMenu);
+           showMpCost(menuPoint);
            if(battleNext)
            {
              turn = 'q';
@@ -165,7 +167,7 @@ class Battle
       }  
     }
   }
- 
+   
   void nextTurn()
   {
     textDepth = 0;
@@ -275,7 +277,7 @@ class Battle
   {
      healed = 9 + (int)random(3);
      
-     if(p.maxHp - p.hp > healed)
+     if(p.maxHp - p.hp < healed)
      {
        healed = p.maxHp - p.hp;
      }
@@ -283,7 +285,8 @@ class Battle
      {
        healed = 0;
      }
-       
+     
+     p.hp+=healed;
   }
   
   void doMagic(int num)
@@ -496,4 +499,22 @@ class Battle
   {
     image(enemy.template.battleSprite,width/2,height/2);
   }
+  
+  void showMpCost(int num)
+  {
+     float mappedMP = map(p.mp,0,p.maxMp,0,width*0.36875);
+     float mappedCost = map(magicCosts[num],0,p.maxMp,0,width*0.36875);
+     
+     if(magicCosts[num]>p.mp)
+     {
+       fill(128,128,128);
+       rect(mSideBorder,topBorder/2+topBorder/4+height/21,mappedMP,height/21);
+     }
+     else
+     {    
+       fill(255,0,0);
+       rect(mSideBorder+mappedMP-mappedCost,topBorder/2+topBorder/4+height/21,mappedCost,height/21);
+     }
+  }
+
 }

@@ -243,6 +243,11 @@ void tryRoom(int x,int y)
     Room room = new Room(r.locX+x,r.locY+y);
     rooms.add(room);
     r = room;
+    
+    if(p.mp<p.maxMp)
+    {
+      p.mp++;
+    }
   }
   
   relocatePlayer(x,y); 
