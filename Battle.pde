@@ -22,7 +22,7 @@ class Battle
 
   String[] turnMenu = {"Attack","Magic","Item","Run"};
   String[] magicMenu = {"Fire","Thunder","Heal"};
-  int[] magicCosts = {5,10,7};
+  int[] magicCosts = {3,8,5};
   String[] itemMenu = {"Nothing :("};
   
   float bSideBorder = sideBorder/2;
@@ -47,6 +47,24 @@ class Battle
     curBattleText = "";
     menuPoint = 0;
     inSpell = false;
+  }
+  
+  void startBattle()
+  {
+    curBattleText = enemy.template.battleStartText;
+    if(battleNext)
+    {
+      curBattleText = " ";
+      battleNext = false;
+      if(enemy.template.speed>p.speed)
+      {
+        turn = 'e';
+      }
+      else
+      {
+        turn = 'p';
+      }
+    }
   }
 
   void showBattleDetails()
@@ -172,6 +190,7 @@ class Battle
   {
     textDepth = 0;
     damage = 0;
+    healed = 0;
     inSpell = false;
     curBattleText = "";
     menu = 'n';
@@ -193,24 +212,6 @@ class Battle
       if(turn == 'q')
       {
         turn = 'e';
-      }
-    }
-  }
-  
-  void startBattle()
-  {
-    battleText(enemy.template.battleStartText);
-    if(battleNext)
-    {
-      curBattleText = " ";
-      battleNext = false;
-      if(enemy.template.speed>p.speed)
-      {
-        turn = 'e';
-      }
-      else
-      {
-        turn = 'p';
       }
     }
   }
@@ -367,8 +368,28 @@ class Battle
   {
     if(n==0)
     {
-      fill(256,64,64);
+      if((int)random(10)==5)
+      {
+        fill(255,0,0);
+      }
+      else
+      {
+        fill(255,128,0);
+      }
+
       ellipse(width/2,height/2,sideBorder,sideBorder);
+    }
+    if(n==1)
+    {
+      if((int)random(10)==5)
+      {
+        fill(0);
+      }
+      else
+      {
+        fill(255,255,0);
+      }
+      rect(width/2-sideBorder/2,0,sideBorder,height);
     }
   }
   
@@ -407,16 +428,11 @@ class Battle
       }
     }
   }
-      
-  void battleText(String s)
-  {
-      curBattleText = s;
-  }
-  
+        
   boolean sequentialText(String s,int next)
   {
-     battleText(s);
-          
+     curBattleText = s;      
+    
      if(battleNext)
      {
        battleNext=false;
@@ -484,6 +500,7 @@ class Battle
     
     fill(255);
     rect(mSideBorder,height-(height/3)+topBorder/8,width/3,height/3-topBorder/2-topBorder/4);
+
     fill(0);
     
     for(int i=0;i<l;i++)
@@ -507,7 +524,7 @@ class Battle
      
      if(magicCosts[num]>p.mp)
      {
-       fill(128,128,128);
+       fill(86,86,86);
        rect(mSideBorder,topBorder/2+topBorder/4+height/21,mappedMP,height/21);
      }
      else

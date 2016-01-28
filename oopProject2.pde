@@ -2,6 +2,7 @@ ArrayList<Entity> ent = new ArrayList<Entity>();
 ArrayList<MonsterType> mon = new ArrayList<MonsterType>();
 ArrayList<Room> rooms = new ArrayList<Room>();
 ArrayList<PImage> backgrounds = new ArrayList<PImage>();
+ArrayList<String> textBuffer = new ArrayList<String>();
 
 boolean[] keys = new boolean[1024];
 PImage background;
@@ -45,10 +46,9 @@ void setup()
   loadMonsters();
   loadSprites();
   initializeRoom();
-  
   makeDoors();
   
-  mode = 'i';
+  mode = 'm';
 }
 
 void draw()
@@ -124,10 +124,10 @@ void loadBackgrounds()
   
   while(more)
   {
-    PImage b = loadImage("background" + i + ".png");
-    if(b != null)
+    PImage ba = loadImage("background" + i + ".png");
+    if(ba != null)
     {
-      backgrounds.add(b);
+      backgrounds.add(ba);
       i++;
     }
     else
@@ -139,12 +139,41 @@ void loadBackgrounds()
 
 void showMenu()
 {
+  float mappedHP = map(p.hp,0,p.maxHp,0,width*0.375);
+  float mappedMP = map(p.mp,0,p.maxMp,0,width*0.375);
+
   fill(128);
   rect(sideBorder,topBorder,width-sideBorder*2,height-topBorder*2);
+  
+  fill(255);
+  rect(sideBorder,topBorder/2,width*0.375,height/21);
+  rect(width/2,topBorder/2,width*0.375,height/21);
+
+
+ 
+  fill(0,255,0);
+  rect(sideBorder,topBorder/2,mappedHP,height/21);
+  fill(0,0,255);
+  rect(width/2,topBorder/2,mappedMP,height/21);
+
+  fill(224);
+  rect(sideBorder,height/2,width-sideBorder*2,topBorder*3);
+  
+  
+  
+  
+  
+  
+  
   fill(0);
   text(p.name + " LV " + p.lv,sideBorder*1.5,topBorder*1.5);
   text("Atk: " + p.atk + "       Def: " + p.def + "       Spd: " + p.speed,sideBorder*1.5,topBorder*2);
   text("To next level: " + p.expToLvUp,sideBorder*1.5,topBorder*2.5);
+  text(p.hp + "/" + p.maxHp,sideBorder*1.1,topBorder*0.75);
+  text(p.mp + "/" + p.maxMp,width/2+sideBorder*0.1,topBorder*0.75);
+
+
+  text("Items\nHeal\nEquipment",sideBorder*1.5,height/2+topBorder/2);
 }
 
 void keyPressed()
@@ -165,14 +194,36 @@ void makePlayer()
 void doOverworld()
 {
   imageMode(CORNER);
-  background(147,91,62);
   image(backgrounds.get(r.background),0,0,width,height);
   imageMode(CENTER);
-
-  updateEntities();
-  updatePlayer();
+  
+  if(!showText())
+  {
+    updateEntities();
+    updatePlayer();
+  }
 }
 
+boolean showText()
+{
+  if(textBuffer.isEmpty())
+  {
+    return false;
+  }
+  else
+  {
+    fill(128);
+    rect(sideBorder,topBorder*5,width-sideBorder*2,topBorder*2);
+    fill(0);
+    text(textBuffer.get(0),sideBorder*1.4,topBorder*5.5);
+    if(next)
+    {
+      textBuffer.remove(0);
+    }
+  }
+  
+  return true;
+}
 void updateEntities()
 {
   for(Entity e:ent)
@@ -277,19 +328,6 @@ void relocatePlayer(int x,int y)
   }
 }
   
-
-void makeDoors()
-{
-  StaticEntity td = new StaticEntity(topDoor,width/2,topBorder/2,'1');
-  StaticEntity bd = new StaticEntity(bottomDoor,width/2,height-topBorder/2,'2');
-  StaticEntity ld = new StaticEntity(leftDoor,sideBorder/2,height/2,'3');
-  StaticEntity rd = new StaticEntity(rightDoor,width-sideBorder/2,height/2,'4');
-  ent.add(td);
-  ent.add(bd);
-  ent.add(ld);
-  ent.add(rd);
-}
-
 void gameOver()
 {
   background(0);
@@ -417,3 +455,16 @@ void playIntro()
     mode = 'o';
   }
 }
+
+void makeDoors()
+{
+  StaticEntity td = new StaticEntity(topDoor,width/2,topBorder/2,'1');
+  StaticEntity bd = new StaticEntity(bottomDoor,width/2,height-topBorder/2,'2');
+  StaticEntity ld = new StaticEntity(leftDoor,sideBorder/2,height/2,'3');
+  StaticEntity rd = new StaticEntity(rightDoor,width-sideBorder/2,height/2,'4');
+  ent.add(td);
+  ent.add(bd);
+  ent.add(ld);
+  ent.add(rd);
+}
+
