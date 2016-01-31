@@ -13,17 +13,33 @@ class Room
   {
     locX = x;
     locY = y;
-    monstersInRoom = new int[numTypeMonsters];
-    background=(int)random(backgrounds.size());
+
+    if((int)random(10) == 5)
+    {
+      boss = true;
+    }
+    else
+    {
+      monstersInRoom = new int[numTypeMonsters];
+      background=(int)random(backgrounds.size());
+      chooseMonsters();
+
+    }
     
-    chooseMonsters();
   }
   
   void makeMonsters()
   {
-    for(int i=0;i<roomNumMonsters;i++)
+    if(boss)
     {
-      makeMonster(monstersInRoom[(int)random(numTypeMonsters)]);
+      makeMonster(mon.size()-1);
+    }
+    else
+    {
+      for(int i=0;i<roomNumMonsters;i++)
+      {
+        makeMonster(monstersInRoom[(int)random(numTypeMonsters)]);
+      }
     }
   }
   
@@ -31,7 +47,7 @@ class Room
   {
     for(int i = 0;i<numTypeMonsters;i++)
     {
-      monstersInRoom[i] = (int)random(mon.size());
+      monstersInRoom[i] = (int)random(mon.size()-1);
     }
   }
   

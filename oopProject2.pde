@@ -48,7 +48,7 @@ void setup()
   initializeRoom();
   makeDoors();
   
-  mode = 'm';
+  mode = 'o';
 }
 
 void draw()
@@ -372,14 +372,23 @@ void loadMonsters()
     monster.speed = parseInt(buffer[5]);
     monster.battleStartText = buffer[6];
     monster.exp = parseInt(buffer[7]);
+    monster.boss = (buffer[8]).charAt(0);
+
     monster.overworldSprite = loadImage(monster.id+"ov.png");
     monster.battleSprite = loadImage(monster.id+"ba.png");
+    
+
   }
 }
 
 void makeMonster(int id)
 {
   Entity monster = new MonsterInstance(mon.get(id));
+  if(((MonsterInstance)(monster)).template.boss == 'y')
+  {
+    monster.pos.x = width/2;
+    monster.pos.y = height/2;
+  }
   ent.add(monster);
 }
 

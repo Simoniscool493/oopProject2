@@ -20,40 +20,43 @@ class MonsterInstance extends FightingEntity
   
   void move()
   {
-    if((int)random(20)==0)
+    if(template.boss == 'n')
     {
-      direction = (int)random(5);
-    }
-    
-    if(direction == 0)
-    {
-    }
-    if(direction == 1)
-    {
-      if(pos.y<height-topBorder)
+      if((int)random(20)==0)
       {
-        pos.y+=movementSpeed;
+        direction = (int)random(5);
       }
-    }
-    if(direction == 2)
-    {
-      if(pos.x>sideBorder)
+      
+      if(direction == 0)
       {
-        pos.x-=movementSpeed;
       }
-    }
-    if(direction == 3)
-    {
-      if(pos.x<width-sideBorder)
+      if(direction == 1)
       {
-        pos.x+=movementSpeed;
+        if(pos.y<height-topBorder)
+        {
+          pos.y+=movementSpeed;
+        }
       }
-    }
-    if(direction == 4)
-    {
-      if(pos.y>topBorder)
+      if(direction == 2)
       {
-        pos.y-=movementSpeed;
+        if(pos.x>sideBorder)
+        {
+          pos.x-=movementSpeed;
+        }
+      }
+      if(direction == 3)
+      {
+        if(pos.x<width-sideBorder)
+        {
+          pos.x+=movementSpeed;
+        }
+      }
+      if(direction == 4)
+      {
+        if(pos.y>topBorder)
+        {
+          pos.y-=movementSpeed;
+        }
       }
     }
   }

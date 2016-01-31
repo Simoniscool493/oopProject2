@@ -10,6 +10,7 @@ class MonsterType
   PImage overworldSprite;
   PImage battleSprite;
   String battleStartText;
+  char boss;
   
   MonsterType()
   {

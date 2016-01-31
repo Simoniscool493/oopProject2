@@ -20,10 +20,9 @@ class Battle
   // d = death
   // w = win
 
-  String[] turnMenu = {"Attack","Magic","Item","Run"};
+  String[] turnMenu = {"Attack","Magic","Run"};
   String[] magicMenu = {"Fire","Thunder","Heal"};
   int[] magicCosts = {3,8,5};
-  String[] itemMenu = {"Nothing :("};
   
   float bSideBorder = sideBorder/2;
   float bTopBorder = topBorder/2;
@@ -112,18 +111,10 @@ class Battle
          if(battleNext)
          {
             battleNext = false;
-            if(menuPoint==1||menuPoint==2)
+            if(menuPoint==1)
             {
-              if(menuPoint==1)
-              {
                 menu = 'm';
-              }
-              else
-              {
-                menu = 'i';
-              }
-              
-              turn = 'r';
+                turn = 'r';
             }
             else
             {
@@ -173,10 +164,6 @@ class Battle
              turn = 'q';
              battleNext = false;
            }
-        }
-        else if(menu=='i')
-        {
-          showMenu(itemMenu);
         }
       }
       else if(turn=='e')
@@ -268,7 +255,7 @@ class Battle
     {
       basicAttack();
     }
-    if(menuPoint==3)
+    if(menuPoint==2)
     {
       run();
     }
