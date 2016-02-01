@@ -215,6 +215,9 @@ class Battle
       {
         mode = 'd';
         ent.remove(index);
+        stopBattleMusic();
+        death.rewind();
+        death.play();
       }
     }
   }
@@ -239,7 +242,18 @@ class Battle
       }
       if(textDepth==2)
       {
-        mode = 'o';
+        stopBattleMusic();
+
+        if(enemy.template.boss == 'y')
+        {
+          mode = 'w';
+        }
+        else
+        {
+          mode = 'o';
+          overworld.loop();
+        }
+        
         ent.remove(index);
       }
       if(textDepth==3)
@@ -392,6 +406,8 @@ class Battle
       if(sequentialText("You ran away",1))
       {
         p.mercyInvincibility = 120;
+        stopBattleMusic();
+        overworld.loop();
         mode = 'o';
       }
     }
@@ -519,6 +535,18 @@ class Battle
        fill(255,0,0);
        rect(mSideBorder+mappedMP-mappedCost,topBorder/2+topBorder/4+height/21,mappedCost,height/21);
      }
+  }
+  
+  void stopBattleMusic()
+  {
+    if(enemy.template.boss == 'y')
+    {
+      boss.pause();
+    }
+    else
+    {
+      battle.pause();
+    }
   }
 
 }

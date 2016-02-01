@@ -1,3 +1,16 @@
+import ddf.minim.*;
+Minim minimIntro;
+Minim minimBattle;
+Minim minimOverworld;
+Minim minimBoss;
+Minim minimDeath;
+
+AudioPlayer intro;
+AudioPlayer battle;
+AudioPlayer overworld;
+AudioPlayer boss;
+AudioPlayer death;
+
 ArrayList<Entity> ent = new ArrayList<Entity>();
 ArrayList<MonsterType> mon = new ArrayList<MonsterType>();
 ArrayList<Room> rooms = new ArrayList<Room>();
@@ -25,11 +38,13 @@ float introTitleHeight;
 // m = menu
 // b = battle
 // d = death
+// w = win
 
 int menuPoint = 0;
 boolean battleNext = false;
 boolean next = false;
 boolean newRoom = false;
+boolean musicPlaying = false;
 
 Battle b = new Battle();
 Player p;
@@ -45,14 +60,35 @@ void setup()
   makePlayer();
   loadMonsters();
   loadSprites();
+  loadMusic();
   initializeRoom();
   makeDoors();
   
-  mode = 'o';
+  mode = 'i';
+  intro.loop();
+}
+
+void loadMusic()
+{
+   minimIntro = new Minim(this);
+   minimBattle = new Minim(this);
+   minimOverworld = new Minim(this);
+   minimBoss = new Minim(this);
+   minimDeath = new Minim(this);
+   
+   intro = minimIntro.loadFile("intro.mp3");
+   battle = minimBattle.loadFile("battle.mp3");
+   overworld = minimOverworld.loadFile("overworld.mp3");
+   boss = minimBoss.loadFile("boss.mp3");
+   death = minimDeath.loadFile("death.mp3");
 }
 
 void draw()
 { 
+  if(mode == 'w')
+  {
+    winGame();
+  } 
   if(mode == 'd')
   {
     gameOver();
@@ -148,8 +184,6 @@ void showMenu()
   fill(255);
   rect(sideBorder,topBorder/2,width*0.375,height/21);
   rect(width/2,topBorder/2,width*0.375,height/21);
-
-
  
   fill(0,255,0);
   rect(sideBorder,topBorder/2,mappedHP,height/21);
@@ -159,19 +193,12 @@ void showMenu()
   fill(224);
   rect(sideBorder,height/2,width-sideBorder*2,topBorder*3);
   
-  
-  
-  
-  
-  
-  
   fill(0);
   text(p.name + " LV " + p.lv,sideBorder*1.5,topBorder*1.5);
   text("Atk: " + p.atk + "       Def: " + p.def + "       Spd: " + p.speed,sideBorder*1.5,topBorder*2);
   text("To next level: " + p.expToLvUp,sideBorder*1.5,topBorder*2.5);
   text(p.hp + "/" + p.maxHp,sideBorder*1.1,topBorder*0.75);
   text(p.mp + "/" + p.maxMp,width/2+sideBorder*0.1,topBorder*0.75);
-
 
   text("Items\nHeal\nEquipment",sideBorder*1.5,height/2+topBorder/2);
 }
@@ -238,6 +265,15 @@ void updateEntities()
     if(e instanceof MonsterInstance && p.isTouching(e) && p.mercyInvincibility == 0)
     {
       b = new Battle((MonsterInstance)e,ent.indexOf(e));
+      overworld.pause();
+      if(((MonsterInstance)e).template.boss == 'y')
+      {
+        boss.loop();
+      }
+      else
+      {
+        battle.loop();
+      }
       mode = 'b';
     }
     
@@ -339,6 +375,8 @@ void gameOver()
     p.mp = p.maxMp;
     next = false;
     mode = 'o';
+    death.pause();
+    overworld.loop();
   }
 }
 
@@ -461,8 +499,17 @@ void playIntro()
   if(next)
   {
     next = false;
+    intro.pause();
+    overworld.loop();
     mode = 'o';
   }
+}
+
+void winGame()
+{
+  background(255);
+  fill(255,128,0);
+  text("Congratulations! The Big Boss is no more!",sideBorder,height/2);
 }
 
 void makeDoors()

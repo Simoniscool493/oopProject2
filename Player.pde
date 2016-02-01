@@ -28,9 +28,9 @@ class Player extends FightingEntity
     mercyInvincibility = 0;
     
     maxHp = 10;
-    hp = 1;
-    maxMp = 10000;
-    mp = 1;
+    hp = 10;
+    maxMp = 10;
+    mp = 10;
     atk = 5;
     def = 5;
     speed = 100;

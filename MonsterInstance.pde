@@ -9,13 +9,25 @@ class MonsterInstance extends FightingEntity
     direction = 0;
     sprite = m.overworldSprite;
     movementSpeed = 10;
-    hitBox = 30;
     hp = template.hp;
+    
+    if(template.boss == 'y')
+    {
+      hitBox = width/5;
+      h = width/2.5;
+      w = width/2.5;
+    }
+    else
+    {
+      hitBox = width/30;
+      h = width/10;
+      w = width/10;
+    }
   }
   
   void update()
   {
-    image(sprite,pos.x,pos.y);
+    image(sprite,pos.x,pos.y,w,h);
   }
   
   void move()

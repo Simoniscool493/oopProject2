@@ -4,6 +4,8 @@ abstract class Entity
   float hitBox;
   PImage sprite;
   char type;
+  float h;
+  float w;
   
   Entity()
   {

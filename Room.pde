@@ -14,18 +14,18 @@ class Room
     locX = x;
     locY = y;
 
-    if((int)random(10) == 5)
+    //if((int)random(10) == 5)
+    if(true)
     {
       boss = true;
     }
     else
     {
       monstersInRoom = new int[numTypeMonsters];
-      background=(int)random(backgrounds.size());
       chooseMonsters();
-
     }
     
+    background=(int)random(backgrounds.size());
   }
   
   void makeMonsters()
@@ -50,6 +50,5 @@ class Room
       monstersInRoom[i] = (int)random(mon.size()-1);
     }
   }
-  
   
 }
