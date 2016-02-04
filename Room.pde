@@ -14,8 +14,8 @@ class Room
     locX = x;
     locY = y;
 
-    //if((int)random(10) == 5)
-    if(true)
+    if(((int)random(10) == 5) && abs(locX)+ abs(locY) > 6)
+    //if(true)
     {
       boss = true;
     }

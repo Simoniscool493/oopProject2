@@ -8,7 +8,7 @@ class Battle
   int damage;
   int healed;
   boolean inSpell;
-  char turn = 's';
+  char turn = 'i';
   char menu = 'n';
   
   // s = starting state
@@ -19,6 +19,7 @@ class Battle
   // f = enemy action
   // d = death
   // w = win
+  // i = intro
 
   String[] turnMenu = {"Attack","Magic","Run"};
   String[] magicMenu = {"Fire","Thunder","Heal"};
@@ -33,6 +34,8 @@ class Battle
   float bMainMenuWidth = width-(bSideBorder*2);
   float bMainMenuHeight = height/3;
   
+  int animationCount = 0;
+  
   Battle()
   {
     
@@ -46,6 +49,7 @@ class Battle
     curBattleText = "";
     menuPoint = 0;
     inSpell = false;
+    introCircleSize = 0;
   }
   
   void startBattle()
@@ -88,10 +92,34 @@ class Battle
     }
   }
   
+  void playBattleIntro()
+  {
+    fill(0);
+    ellipse(width/2,height/2,sideBorder*introCircleSize,sideBorder*introCircleSize);
+    fill(255);
+    ellipse(width/2,height/2,sideBorder*introCircleSize/2,sideBorder*introCircleSize/2);
+
+    if(introCircleSize>24)
+    {
+      turn = 's';
+    }
+    else
+    {
+      introCircleSize+=0.15;
+    }
+  }
+  
   void doBattle()
   {
-    showBattleDetails();
+    if(turn != 'i')
+    {
+      showBattleDetails();
+    }
 
+    if(turn == 'i')
+    {
+      playBattleIntro();
+    }
     if(turn == 'd')
     {
       death();
@@ -393,12 +421,7 @@ class Battle
       rect(width/2-sideBorder/2,0,sideBorder,height);
     }
   }
-  
-  void useItem()
-  {
     
-  }
-  
   void run()
   {
     if(textDepth == 0)
@@ -412,11 +435,42 @@ class Battle
       }
     }
   }
+  
+  void animateAttack()
+  {
+    float x1 = random(width);
+    float y1 = random(height);
+    float x2 = random(width);
+    float y2 = random(height);
+
+    if(turn=='q') //player attack
+    {
+      stroke(0,255,0);
+    }
+    else //enemy attack
+    {
+      stroke(255,0,0);
+    }
+    strokeWeight(10);
+    
+    line(x1-sideBorder/2,y1-sideBorder/2,x1+sideBorder/2,y1+sideBorder/2);
+    line(x1+sideBorder/2,y1-sideBorder/2,x1-sideBorder/2,y1+sideBorder/2);
+    line(x2-sideBorder/2,y2-sideBorder/2,x2+sideBorder/2,y2+sideBorder/2);
+    line(x2+sideBorder/2,y2-sideBorder/2,x2-sideBorder/2,y2+sideBorder/2);
+
+    stroke(0);
+    strokeWeight(1);
+    
+    animationCount++;
+    
+
+  }
 
   void basicAttack()
   {
     if(textDepth==0)
     {
+       animateAttack();
        if(sequentialText(p.name + " attacks!",1))
        {
          damage = (p.atk/enemy.template.def);
@@ -428,6 +482,7 @@ class Battle
       if(sequentialText("you dealt a crazy "+ damage +" damage!",2))
       {
         nextTurn();
+        animationCount = 0;
       }
     }
   }

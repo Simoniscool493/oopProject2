@@ -1,4 +1,5 @@
 import ddf.minim.*;
+
 Minim minimIntro;
 Minim minimBattle;
 Minim minimOverworld;

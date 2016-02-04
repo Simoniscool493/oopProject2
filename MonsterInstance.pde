@@ -82,6 +82,7 @@ class MonsterInstance extends FightingEntity
   {
     if(b.textDepth==0)
     {
+      b.animateAttack();
        if(b.sequentialText(template.name + " attacks!",1))
        {
           b.damage = (template.atk/p.def);
