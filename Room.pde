@@ -51,4 +51,23 @@ class Room
     }
   }
   
+  void clearMonsters()
+  {
+  int size = ent.size();
+  int i = 0;
+ 
+  while(i<ent.size())
+  {
+    if(ent.get(i) instanceof MonsterInstance)
+    {
+      ent.remove(i);
+    }
+    else
+    {
+      i++;
+    }
+  }
+}
+
+  
 }

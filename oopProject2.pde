@@ -53,7 +53,7 @@ Room r;
 
 void setup()
 {  
-  size(300,300);
+  size(1000,1000);
   topBorder = height/8;
   sideBorder = width/8;
   textSize(height/33);
@@ -120,24 +120,6 @@ void initializeRoom()
 {
   r = new Room(0,0);
   rooms.add(r);
-}
-
-void clearMonsters()
-{
-  int size = ent.size();
-  int i = 0;
- 
-  while(i<ent.size())
-  {
-    if(ent.get(i) instanceof MonsterInstance)
-    {
-      ent.remove(i);
-    }
-    else
-    {
-      i++;
-    }
-  }
 }
 
 void loadSprites()
@@ -279,15 +261,14 @@ void updateEntities()
     if(e.type > 10 && e.type < 53 && p.isTouching(e))
     {
       newRoom = true;
-      p.mercyInvincibility = 10;
+      p.mercyInvincibility = 5;
       changeRoom(e.type);
-      print(e.type);
     }
   }
   
   if(newRoom)
   {
-    clearMonsters();
+    r.clearMonsters();
     newRoom = false;
     r.makeMonsters();
   }
@@ -371,6 +352,9 @@ void gameOver()
   text("GAME OVER",width/2-sideBorder,height/2);
   if(next)
   {
+    r = rooms.get(0);
+    p.pos.x = width/2;
+    p.pos.y = height/2;
     p.hp = p.maxHp;
     p.mp = p.maxMp;
     next = false;
@@ -412,8 +396,7 @@ void loadMonsters()
     monster.exp = parseInt(buffer[7]);
     monster.boss = (buffer[8]).charAt(0);
 
-    monster.overworldSprite = loadImage(monster.id+"ov.png");
-    monster.battleSprite = loadImage(monster.id+"ba.png");
+    monster.sprite = loadImage(monster.id+".png");
   }
 }
 

@@ -7,8 +7,7 @@ class MonsterType
   int def;
   int speed;
   int exp;
-  PImage overworldSprite;
-  PImage battleSprite;
+  PImage sprite;
   String battleStartText;
   char boss;
   

@@ -387,7 +387,7 @@ class Battle
     return 0;
   }
   
-  void damageEntity(FightingEntity fe)
+  void damageEntity(MobileEntity fe)
   {
      if(damage<1)
      {
@@ -583,7 +583,14 @@ class Battle
   
   void showBattleSprite()
   {
-    image(enemy.template.battleSprite,width/2,height/2,enemy.w*2,enemy.h*2);
+    if(enemy.template.boss == 'y')
+    {
+      image(enemy.template.sprite,width/2,height/2,enemy.w,enemy.h);
+    }
+    else
+    {
+      image(enemy.template.sprite,width/2,height/2,enemy.w*2,enemy.h*2);
+    }
   }
   
   void showMpCost(int num)

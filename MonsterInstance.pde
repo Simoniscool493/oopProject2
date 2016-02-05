@@ -1,4 +1,4 @@
-class MonsterInstance extends FightingEntity
+class MonsterInstance extends MobileEntity
 {
   int direction;
   MonsterType template;
@@ -7,7 +7,7 @@ class MonsterInstance extends FightingEntity
   {
     template = m;
     direction = 0;
-    sprite = m.overworldSprite;
+    sprite = m.sprite;
     movementSpeed = width/100;
     hp = template.hp;
     
@@ -19,9 +19,9 @@ class MonsterInstance extends FightingEntity
     }
     else
     {
-      hitBox = width/30;
-      h = width/10;
-      w = width/10;
+      hitBox = width/24;
+      h = width/12;
+      w = width/12;
     }
   }
   
@@ -29,10 +29,10 @@ class MonsterInstance extends FightingEntity
   {
     image(sprite,pos.x,pos.y,w,h);
   }
-  
+
   void move()
   {
-    if(template.boss == 'n')
+    if(template.boss == 'n' && false)
     {
       if((int)random(20)==0)
       {

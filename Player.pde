@@ -1,4 +1,4 @@
-class Player extends FightingEntity
+class Player extends MobileEntity
 {
   String name;
   
@@ -36,7 +36,7 @@ class Player extends FightingEntity
     speed = 100;
     expToLvUp = 100;
     
-    movementSpeed = width/50;
+    movementSpeed = width/80;
   }
   
   void update()

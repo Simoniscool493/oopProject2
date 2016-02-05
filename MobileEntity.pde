@@ -1,6 +1,7 @@
 abstract class MobileEntity extends Entity
 {
   float movementSpeed;
+  int hp;
 
   MobileEntity()
   {
