@@ -35,8 +35,6 @@ abstract class Entity
     
   }
   
-  void update()
-  {
-    image(sprite,pos.x,pos.y);   
-  }
+  abstract void update();
+
 }

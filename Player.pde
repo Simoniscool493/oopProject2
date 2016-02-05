@@ -24,25 +24,25 @@ class Player extends FightingEntity
     exp = 0;
     pos.x=x;
     pos.y=y;
-    hitBox=25;
+    hitBox=width/40;
     mercyInvincibility = 0;
     
     maxHp = 10;
     hp = 10;
     maxMp = 10;
     mp = 10;
-    atk = 5;
+    atk = 5000;
     def = 5;
     speed = 100;
     expToLvUp = 100;
     
-    movementSpeed = 10;
+    movementSpeed = width/50;
   }
   
   void update()
   {
     fill(255);
-    ellipse(pos.x,pos.y,50,50);
+    ellipse(pos.x,pos.y,width/20,width/20);
   }
   
   void move()

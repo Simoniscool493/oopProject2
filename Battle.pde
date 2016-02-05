@@ -94,9 +94,16 @@ class Battle
   
   void playBattleIntro()
   {
+    
     fill(0);
+    stroke(0);
     ellipse(width/2,height/2,sideBorder*introCircleSize,sideBorder*introCircleSize);
+    fill(127);
+    stroke(127);
+    ellipse(width/2,height/2,sideBorder*introCircleSize/2,sideBorder*introCircleSize/1.5);
+    ellipse(width/2,height/2,sideBorder*introCircleSize/1.5,sideBorder*introCircleSize/2);
     fill(255);
+    stroke(255);
     ellipse(width/2,height/2,sideBorder*introCircleSize/2,sideBorder*introCircleSize/2);
 
     if(introCircleSize>24)
@@ -107,6 +114,8 @@ class Battle
     {
       introCircleSize+=0.15;
     }
+    
+    stroke(0);
   }
   
   void doBattle()
@@ -275,9 +284,11 @@ class Battle
         if(enemy.template.boss == 'y')
         {
           mode = 'w';
+          intro.loop();
         }
         else
         {
+          p.mercyInvincibility = 120;
           mode = 'o';
           overworld.loop();
         }
@@ -566,13 +577,13 @@ class Battle
       text(points[i],sideBorder/2+sideBorder/3,height-(height/3)+topBorder/2-topBorder/10+(i*topBorder*0.36)+(topBorder*0.1));
     }
       
-    ellipse(sideBorder/2-sideBorder/10+sideBorder/3,height-(height/3)+topBorder/2-topBorder/10+(menuPoint*topBorder*0.36),10,10);
+    ellipse(sideBorder/2-sideBorder/10+sideBorder/3,height-(height/3)+topBorder/2-topBorder/10+(menuPoint*topBorder*0.36),width/100,width/100);
     
   }
   
   void showBattleSprite()
   {
-    image(enemy.template.battleSprite,width/2,height/2);
+    image(enemy.template.battleSprite,width/2,height/2,enemy.w*2,enemy.h*2);
   }
   
   void showMpCost(int num)

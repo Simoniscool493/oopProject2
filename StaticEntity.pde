@@ -17,7 +17,7 @@ class StaticEntity extends Entity
 
   void update()
   {
-    image(sprite,pos.x,pos.y);   
+    image(sprite,pos.x,pos.y,height/10,width/10);   
   }
   
   void move()

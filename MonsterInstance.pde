@@ -8,7 +8,7 @@ class MonsterInstance extends FightingEntity
     template = m;
     direction = 0;
     sprite = m.overworldSprite;
-    movementSpeed = 10;
+    movementSpeed = width/100;
     hp = template.hp;
     
     if(template.boss == 'y')

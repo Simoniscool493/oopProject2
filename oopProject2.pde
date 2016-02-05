@@ -53,7 +53,7 @@ Room r;
 
 void setup()
 {  
-  size(1000,1000);
+  size(300,300);
   topBorder = height/8;
   sideBorder = width/8;
   textSize(height/33);
@@ -119,8 +119,6 @@ void draw()
 void initializeRoom()
 {
   r = new Room(0,0);
-  r.background = 0;
-  r.makeMonsters();
   rooms.add(r);
 }
 
@@ -283,6 +281,7 @@ void updateEntities()
       newRoom = true;
       p.mercyInvincibility = 10;
       changeRoom(e.type);
+      print(e.type);
     }
   }
   
@@ -415,8 +414,6 @@ void loadMonsters()
 
     monster.overworldSprite = loadImage(monster.id+"ov.png");
     monster.battleSprite = loadImage(monster.id+"ba.png");
-    
-
   }
 }
 
