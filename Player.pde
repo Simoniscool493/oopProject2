@@ -31,7 +31,7 @@ class Player extends MobileEntity
     hp = 10;
     maxMp = 10;
     mp = 10;
-    atk = 5000;
+    atk = 5;
     def = 5;
     speed = 100;
     expToLvUp = 100;
@@ -43,6 +43,10 @@ class Player extends MobileEntity
   {
     fill(255);
     ellipse(pos.x,pos.y,width/20,width/20);
+    fill(255,255,0);
+    ellipse(pos.x,pos.y,width/25,width/25);
+    fill(255,127,0);
+    ellipse(pos.x,pos.y,width/40,width/40);
   }
   
   void move()

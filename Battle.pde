@@ -72,7 +72,7 @@ class Battle
 
   void showBattleDetails()
   {
-    background(255);
+    background(map(p.hp,0,p.maxHp,0,255));
     fill(128);
     rect(bSideBorder,height-(height/3),width-(bSideBorder*2),height/3-bTopBorder);
     

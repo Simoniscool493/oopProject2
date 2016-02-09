@@ -1,13 +1,20 @@
 class Session
 {  
-  Session()
+  Session(char m)
   {   
     makePlayer();
     loadMonsters();
     loadSprites();
     loadMusic();
     initializeRoom();
-    makeDoors();    
+    makeDoors();   
+    
+    mode = m;
+
+    intro.loop();
+    
+    textBuffer.add("What is your name?\n(Press space to enter name)");
+    background(0);
   }
 
   void makePlayer()
@@ -21,29 +28,16 @@ class Session
     
     for(int i=1;i<monsters.length;i++)
     {
-      MonsterType monster = new MonsterType();
-      mon.add(monster);
-      
       String[] buffer = split(monsters[i],',');
-      
-      monster.id = parseInt(buffer[0]);
-      monster.name = buffer[1];
-      monster.hp = parseInt(buffer[2]);
-      monster.atk = parseInt(buffer[3]);
-      monster.def = parseInt(buffer[4]);
-      monster.speed = parseInt(buffer[5]);
-      monster.battleStartText = buffer[6];
-      monster.exp = parseInt(buffer[7]);
-      monster.boss = (buffer[8]).charAt(0);
-  
-      monster.sprite = loadImage(monster.id+".png");
+
+      MonsterType monster = new MonsterType(buffer);
+      mon.add(monster);
     }
   }
   
   void loadSprites()
   {
     title = loadImage("title.png");
-    
     topDoor = loadImage("doors/topDoor.png");
     bottomDoor = loadImage("doors/bottomDoor.png");
     leftDoor = loadImage("doors/leftDoor.png");

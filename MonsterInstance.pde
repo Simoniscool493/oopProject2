@@ -27,7 +27,13 @@ class MonsterInstance extends MobileEntity
   
   void update()
   {
-    image(sprite,pos.x,pos.y,w,h);
+    strokeWeight(width/200);
+    stroke(template.lineCol);
+    fill(template.col);
+    ellipse(pos.x,pos.y,w,h);
+    line(pos.x-w/3,pos.y-h/3,pos.x+w/3,pos.y+h/3);
+    line(pos.x+w/3,pos.y-h/3,pos.x-w/3,pos.y+h/3);
+    strokeWeight(1);
   }
 
   void move()

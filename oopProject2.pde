@@ -63,22 +63,16 @@ void setup()
   sideBorder = width/8;
   textSize(height/33);
   
-  s = new Session();
-
-  mode = 'e';
-  intro.loop();
-  
-  textBuffer.add("What is your name?\n(Press space to confirm)");
-  background(0);
+  s = new Session('i');
 }
 
 void enterName()
 {
   background(0);
-  textSize(height/33);
   fill(255);
   textSize(height/20);
   text(name,sideBorder,height/2);
+  
   if(next)
   {
     next = false;
@@ -96,12 +90,12 @@ void enterName()
 
 void draw()
 { 
-   if(!showText() && textBuffer.isEmpty())
+   if(mode == 'i')
    {
-     if(mode == 'i')
-     {
-        playIntro();
-     }
+      playIntro();
+   }
+   else if(!showText() && textBuffer.isEmpty())
+   {
      if(mode == 'e')
      {
        enterName();
@@ -370,6 +364,7 @@ void winGame()
 {
   background(255);
   fill(255,128,0);
-  text("Congratulations! The Big Boss is no more!",sideBorder,height/2);
+  textAlign(CENTER);
+  text("Congratulations! The Big Boss is no more!",width/2,height/2);
 }
 
