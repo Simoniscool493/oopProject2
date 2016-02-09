@@ -1,6 +1,7 @@
 class MonsterInstance extends MobileEntity
 {
   int direction;
+
   MonsterType template;
     
   MonsterInstance(MonsterType m)
@@ -10,6 +11,9 @@ class MonsterInstance extends MobileEntity
     sprite = m.sprite;
     movementSpeed = width/100;
     hp = template.hp;
+    
+    angle1 = random(10);
+    angle2 = random(10);
     
     if(template.boss == 'y')
     {
@@ -27,6 +31,11 @@ class MonsterInstance extends MobileEntity
   
   void update()
   {
+    float ball1X = pos.x + sin(angle1) * hitBox*1.5;
+    float ball1Y = pos.y + cos(angle1) * hitBox*1.5;
+    float ball2X = pos.x + sin(-angle2) * hitBox*1.5;
+    float ball2Y = pos.y + cos(-angle2) * hitBox*1.5;
+
     strokeWeight(width/200);
     stroke(template.lineCol);
     fill(template.col);
@@ -34,6 +43,14 @@ class MonsterInstance extends MobileEntity
     line(pos.x-w/3,pos.y-h/3,pos.x+w/3,pos.y+h/3);
     line(pos.x+w/3,pos.y-h/3,pos.x-w/3,pos.y+h/3);
     strokeWeight(1);
+    
+    ellipse(ball1X,ball1Y,width/100,width/100);
+    ellipse(ball2X,ball2Y,width/100,width/100);
+
+    angle1+=(float)(direction+1)/20;
+    angle2+=(float)(direction+1)/30;
+
+    
   }
 
   void move()

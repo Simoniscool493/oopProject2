@@ -72,7 +72,7 @@ class Battle
 
   void showBattleDetails()
   {
-    background(map(p.hp,0,p.maxHp,0,255));
+    background(255,map(p.hp,0,p.maxHp,0,255),map(p.hp,0,p.maxHp,0,255));
     fill(128);
     rect(bSideBorder,height-(height/3),width-(bSideBorder*2),height/3-bTopBorder);
     
@@ -102,8 +102,8 @@ class Battle
     stroke(127);
     ellipse(width/2,height/2,sideBorder*introCircleSize/2,sideBorder*introCircleSize/1.5);
     ellipse(width/2,height/2,sideBorder*introCircleSize/1.5,sideBorder*introCircleSize/2);
-    fill(255);
-    stroke(255);
+    fill(255,map(p.hp,0,p.maxHp,0,255),map(p.hp,0,p.maxHp,0,255));
+    stroke(255,map(p.hp,0,p.maxHp,0,255),map(p.hp,0,p.maxHp,0,255));
     ellipse(width/2,height/2,sideBorder*introCircleSize/2,sideBorder*introCircleSize/2);
 
     if(introCircleSize>24)
@@ -460,7 +460,7 @@ class Battle
     }
     else //enemy attack
     {
-      stroke(255,0,0);
+      stroke(128,0,0);
     }
     strokeWeight(10);
     
@@ -473,8 +473,6 @@ class Battle
     strokeWeight(1);
     
     animationCount++;
-    
-
   }
 
   void basicAttack()

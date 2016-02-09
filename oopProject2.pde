@@ -130,7 +130,7 @@ void keyTyped()
   if(mode == 'b')
   {
     if(b.turn == 'p'||b.turn == 'r')
-    {
+    {      
       if(key == 'w')
       {
         menuPoint--;
