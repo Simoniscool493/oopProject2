@@ -51,6 +51,17 @@ class Room
     }
   }
   
+  void makeMonster(int id)
+  {
+    Entity monster = new MonsterInstance(mon.get(id));
+    if(((MonsterInstance)(monster)).template.boss == 'y')
+    {
+      monster.pos.x = width/2;
+      monster.pos.y = height/2;
+    }
+    ent.add(monster);
+  }
+  
   void clearMonsters()
   {
   int size = ent.size();

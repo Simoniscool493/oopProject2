@@ -32,7 +32,7 @@ class MonsterInstance extends MobileEntity
 
   void move()
   {
-    if(template.boss == 'n' && false)
+    if(template.boss == 'n')
     {
       if((int)random(20)==0)
       {

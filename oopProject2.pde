@@ -12,6 +12,8 @@ AudioPlayer overworld;
 AudioPlayer boss;
 AudioPlayer death;
 
+java.lang.Object sound_this = this;
+
 ArrayList<Entity> ent = new ArrayList<Entity>();
 ArrayList<MonsterType> mon = new ArrayList<MonsterType>();
 ArrayList<Room> rooms = new ArrayList<Room>();
@@ -34,19 +36,22 @@ char mode;
 float introCircleSize = 0;
 float introTitleHeight;
 
+String name = new String();
+
 // i = intro 
 // o = overworld
 // m = menu
 // b = battle
 // d = death
 // w = win
+// e = enter name
 
 int menuPoint = 0;
 boolean battleNext = false;
 boolean next = false;
 boolean newRoom = false;
-boolean musicPlaying = false;
 
+Session s;
 Battle b = new Battle();
 Player p;
 Room r;
@@ -57,100 +62,124 @@ void setup()
   topBorder = height/8;
   sideBorder = width/8;
   textSize(height/33);
-    
-  makePlayer();
-  loadMonsters();
-  loadSprites();
-  loadMusic();
-  initializeRoom();
-  makeDoors();
   
-  mode = 'i';
-  intro.loop();
-}
+  s = new Session();
 
-void loadMusic()
-{
-   minimIntro = new Minim(this);
-   minimBattle = new Minim(this);
-   minimOverworld = new Minim(this);
-   minimBoss = new Minim(this);
-   minimDeath = new Minim(this);
-   
-   intro = minimIntro.loadFile("intro.mp3");
-   battle = minimBattle.loadFile("battle.mp3");
-   overworld = minimOverworld.loadFile("overworld.mp3");
-   boss = minimBoss.loadFile("boss.mp3");
-   death = minimDeath.loadFile("death.mp3");
+  mode = 'e';
+  intro.loop();
+  
+  textBuffer.add("What is your name?\n(Press space to confirm)");
+  background(0);
 }
 
 void draw()
 { 
-  if(mode == 'w')
-  {
-    winGame();
-  } 
-  if(mode == 'd')
-  {
-    gameOver();
-  }
-  if(mode == 'i')
-  {
-    playIntro();
-  }
-  if(mode == 'o')
-  {
-    doOverworld();
-  }
-  else if(mode == 'b')
-  {
-    b.doBattle();    
-  }
-  if(mode == 'm')
-  {
-    showMenu();
-  }
-    
-  text(r.locX + " " + r.locY, sideBorder,topBorder);
-  
+   if(!showText() && textBuffer.isEmpty())
+   {
+     if(mode == 'i')
+     {
+        playIntro();
+     }
+     if(mode == 'e')
+     {
+       enterName();
+     }
+     if(mode == 'w')
+     {
+       winGame();
+     } 
+     if(mode == 'd')
+     {
+       gameOver(); 
+     }
+     if(mode == 'o')
+     {
+       doOverworld();
+     }
+     if(mode == 'b')
+     {
+       b.doBattle();    
+     }
+     if(mode == 'm')
+     {
+       showMenu();
+     }
+   }
+      
   next = false;
 }
 
-void initializeRoom()
+void enterName()
 {
-  r = new Room(0,0);
-  rooms.add(r);
-}
-
-void loadSprites()
-{
-  title = loadImage("title.png");
-  
-  topDoor = loadImage("doors/topDoor.png");
-  bottomDoor = loadImage("doors/bottomDoor.png");
-  leftDoor = loadImage("doors/leftDoor.png");
-  rightDoor = loadImage("doors/rightDoor.png");
-  
-  loadBackgrounds();
-}
-
-void loadBackgrounds()
-{
-  boolean more = true;
-  int i = 0;
-  
-  while(more)
+  background(0);
+  textSize(height/33);
+  fill(255);
+  textSize(height/20);
+  text(name,sideBorder,height/2);
+  if(next)
   {
-    PImage ba = loadImage("background" + i + ".png");
-    if(ba != null)
+    next = false;
+    p.name = name;
+    intro.pause();
+    overworld.loop();
+    mode = 'o';
+    textSize(height/33);
+    textBuffer.add(name + ".");
+  }
+}
+
+void keyTyped()
+{
+  if(mode == 'b')
+  {
+    if(b.turn == 'p'||b.turn == 'r')
     {
-      backgrounds.add(ba);
-      i++;
+      if(key == 'w')
+      {
+        menuPoint--;
+      }
+      if(key == 's')
+      {
+        menuPoint++;
+      }
     }
-    else
+    
+    if(key == ' ')
     {
-      more = false;
+      battleNext = true;
     }
+  }
+  
+  if(key == 'e')
+  {
+    if(mode == 'o')
+    {
+      mode = 'm';
+    }
+  }
+  
+  if(key == 'q')
+  {
+    if(mode == 'm')
+    {
+       mode = 'o';
+    }
+  }
+    
+  if(key == ' ')
+  {
+    next = true;
+  }
+  
+  if(key == 'm' && mode == 'o')
+  {
+    r.makeMonster(r.monstersInRoom[(int)random(r.numTypeMonsters)]);
+  }
+  
+  if(mode == 'e')
+  {
+    name = name+key;
+    println(key);
   }
 }
 
@@ -194,21 +223,20 @@ void keyReleased()
   keys[keyCode] = false;
 }
 
-void makePlayer()
-{
-  p = new Player(width/2,height/2);
-}
 
 void doOverworld()
 {
-  imageMode(CORNER);
-  image(backgrounds.get(r.background),0,0,width,height);
-  imageMode(CENTER);
+  if(textBuffer.isEmpty())
+  {
+    imageMode(CORNER);
+    image(backgrounds.get(r.background),0,0,width,height);
+    imageMode(CENTER);
+  }
   
   if(!showText())
   {
-    updateEntities();
-    updatePlayer();
+   updateEntities();
+   updatePlayer();
   }
 }
 
@@ -232,6 +260,7 @@ boolean showText()
   
   return true;
 }
+
 void updateEntities()
 {
   for(Entity e:ent)
@@ -375,90 +404,7 @@ void updatePlayer()
   }
 }
 
-void loadMonsters()
-{
-  String[] monsters = loadStrings("monsters.csv");
-  
-  for(int i=1;i<monsters.length;i++)
-  {
-    MonsterType monster = new MonsterType();
-    mon.add(monster);
-    
-    String[] buffer = split(monsters[i],',');
-    
-    monster.id = parseInt(buffer[0]);
-    monster.name = buffer[1];
-    monster.hp = parseInt(buffer[2]);
-    monster.atk = parseInt(buffer[3]);
-    monster.def = parseInt(buffer[4]);
-    monster.speed = parseInt(buffer[5]);
-    monster.battleStartText = buffer[6];
-    monster.exp = parseInt(buffer[7]);
-    monster.boss = (buffer[8]).charAt(0);
 
-    monster.sprite = loadImage(monster.id+".png");
-  }
-}
-
-void makeMonster(int id)
-{
-  Entity monster = new MonsterInstance(mon.get(id));
-  if(((MonsterInstance)(monster)).template.boss == 'y')
-  {
-    monster.pos.x = width/2;
-    monster.pos.y = height/2;
-  }
-  ent.add(monster);
-}
-
-void keyTyped()
-{
-  if(mode == 'b')
-  {
-    if(b.turn == 'p'||b.turn == 'r')
-    {
-      if(key == 'w')
-      {
-        menuPoint--;
-      }
-      if(key == 's')
-      {
-        menuPoint++;
-      }
-    }
-    
-    if(key == ' ')
-    {
-      battleNext = true;
-    }
-  }
-  
-  if(key == 'e')
-  {
-    if(mode == 'o')
-    {
-      mode = 'm';
-    }
-  }
-  
-  if(key == 'q')
-  {
-    if(mode == 'm')
-    {
-       mode = 'o';
-    }
-  }
-    
-  if(key == ' ')
-  {
-    next = true;
-  }
-  
-  if(key == 'm')
-  {
-    makeMonster(r.monstersInRoom[(int)random(r.numTypeMonsters)]);
-  }
-}
 
 void playIntro()
 {
@@ -480,9 +426,8 @@ void playIntro()
   if(next)
   {
     next = false;
-    intro.pause();
-    overworld.loop();
-    mode = 'o';
+    mode = 'e';
+    background(0);
   }
 }
 
@@ -491,17 +436,5 @@ void winGame()
   background(255);
   fill(255,128,0);
   text("Congratulations! The Big Boss is no more!",sideBorder,height/2);
-}
-
-void makeDoors()
-{
-  StaticEntity td = new StaticEntity(topDoor,width/2,topBorder/2,'1');
-  StaticEntity bd = new StaticEntity(bottomDoor,width/2,height-topBorder/2,'2');
-  StaticEntity ld = new StaticEntity(leftDoor,sideBorder/2,height/2,'3');
-  StaticEntity rd = new StaticEntity(rightDoor,width-sideBorder/2,height/2,'4');
-  ent.add(td);
-  ent.add(bd);
-  ent.add(ld);
-  ent.add(rd);
 }
 
