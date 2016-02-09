@@ -72,6 +72,28 @@ void setup()
   background(0);
 }
 
+void enterName()
+{
+  background(0);
+  textSize(height/33);
+  fill(255);
+  textSize(height/20);
+  text(name,sideBorder,height/2);
+  if(next)
+  {
+    next = false;
+    p.name = name;
+    intro.pause();
+    overworld.loop();
+    mode = 'o';
+    textSize(height/33);
+    textBuffer.add("Your name is " + name + ".");
+    textBuffer.add("But there's another name that describes you.");
+    textBuffer.add("That name is...");
+    textBuffer.add("HERO.");
+  }
+}
+
 void draw()
 { 
    if(!showText() && textBuffer.isEmpty())
@@ -107,25 +129,6 @@ void draw()
    }
       
   next = false;
-}
-
-void enterName()
-{
-  background(0);
-  textSize(height/33);
-  fill(255);
-  textSize(height/20);
-  text(name,sideBorder,height/2);
-  if(next)
-  {
-    next = false;
-    p.name = name;
-    intro.pause();
-    overworld.loop();
-    mode = 'o';
-    textSize(height/33);
-    textBuffer.add(name + ".");
-  }
 }
 
 void keyTyped()
@@ -176,10 +179,20 @@ void keyTyped()
     r.makeMonster(r.monstersInRoom[(int)random(r.numTypeMonsters)]);
   }
   
-  if(mode == 'e')
+  if(mode == 'e' && key != '\n' && key != '\t' && key != ' ' && textBuffer.isEmpty())
   {
-    name = name+key;
-    println(key);
+    if(key == '\b')
+    {
+      if(name.length()>0)
+      {
+        name = name.substring(0,name.length()-1);
+      }
+    }
+    else if(name.length() < 20)
+    {
+      name = name+key;
+      println(key);
+    }
   }
 }
 
@@ -189,7 +202,7 @@ void showMenu()
   float mappedMP = map(p.mp,0,p.maxMp,0,width*0.375);
 
   fill(128);
-  rect(sideBorder,topBorder,width-sideBorder*2,height-topBorder*2);
+  rect(sideBorder,topBorder,width-sideBorder*2,height/2);
   
   fill(255);
   rect(sideBorder,topBorder/2,width*0.375,height/21);
@@ -199,18 +212,14 @@ void showMenu()
   rect(sideBorder,topBorder/2,mappedHP,height/21);
   fill(0,0,255);
   rect(width/2,topBorder/2,mappedMP,height/21);
-
-  fill(224);
-  rect(sideBorder,height/2,width-sideBorder*2,topBorder*3);
   
   fill(0);
-  text(p.name + " LV " + p.lv,sideBorder*1.5,topBorder*1.5);
-  text("Atk: " + p.atk + "       Def: " + p.def + "       Spd: " + p.speed,sideBorder*1.5,topBorder*2);
-  text("To next level: " + p.expToLvUp,sideBorder*1.5,topBorder*2.5);
+  text(p.name,sideBorder*1.5,topBorder*1.5);
+  text("LV " + p.lv,sideBorder*1.5,topBorder*2);
+  text("Atk: " + p.atk + "       Def: " + p.def + "       Spd: " + p.speed,sideBorder*1.5,topBorder*2.5);
+  text("To next level: " + p.expToLvUp,sideBorder*1.5,topBorder*3);
   text(p.hp + "/" + p.maxHp,sideBorder*1.1,topBorder*0.75);
   text(p.mp + "/" + p.maxMp,width/2+sideBorder*0.1,topBorder*0.75);
-
-  text("Items\nHeal\nEquipment",sideBorder*1.5,height/2+topBorder/2);
 }
 
 void keyPressed()
@@ -222,7 +231,6 @@ void keyReleased()
 {
   keys[keyCode] = false;
 }
-
 
 void doOverworld()
 {
@@ -291,7 +299,7 @@ void updateEntities()
     {
       newRoom = true;
       p.mercyInvincibility = 5;
-      changeRoom(e.type);
+      r.changeRoom(e.type);
     }
   }
   
@@ -300,77 +308,6 @@ void updateEntities()
     r.clearMonsters();
     newRoom = false;
     r.makeMonsters();
-  }
-}
-
-void changeRoom(char c)
-{
-  if(c == '1')
-  {
-    tryRoom(0,-1);
-  }
-  else if(c == '2')
-  {
-    tryRoom(0,1);
-  }
-  else if(c == '3')
-  {
-    tryRoom(-1,0);
-  }
-  else if(c == '4')
-  {
-    tryRoom(1,0);
-  }
-}
-
-void tryRoom(int x,int y)
-{
-  boolean used = false;
-  for(Room rm:rooms)
-  {
-    if(rm.locX == r.locX+x && rm.locY == r.locY+y && !used)
-    {
-      r = rm;
-      used = true;
-    }      
-  }
-  
-  if(!used)
-  {
-    Room room = new Room(r.locX+x,r.locY+y);
-    rooms.add(room);
-    r = room;
-    
-    if(p.mp<p.maxMp)
-    {
-      p.mp++;
-    }
-  }
-  
-  relocatePlayer(x,y); 
-}
-
-void relocatePlayer(int x,int y)
-{
-  if(x == 1)
-  {
-    p.pos.x = sideBorder*1.2;
-    p.pos.y = height/2;
-  }
-  else if(x == -1)
-  {
-    p.pos.x = width-sideBorder*1.2;
-    p.pos.y = height/2;
-  }
-  else if(y == 1)
-  {
-    p.pos.x = width/2;
-    p.pos.y = topBorder*1.2;
-  }
-  else if(y == -1)
-  {
-    p.pos.x = width/2;
-    p.pos.y = height-topBorder*1.2;
   }
 }
   
@@ -403,8 +340,6 @@ void updatePlayer()
     p.mercyInvincibility--;
   }
 }
-
-
 
 void playIntro()
 {

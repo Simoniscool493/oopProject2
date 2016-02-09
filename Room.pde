@@ -64,21 +64,90 @@ class Room
   
   void clearMonsters()
   {
-  int size = ent.size();
-  int i = 0;
- 
-  while(i<ent.size())
+    int size = ent.size();
+    int i = 0;
+   
+    while(i<ent.size())
+    {
+      if(ent.get(i) instanceof MonsterInstance)
+      {
+        ent.remove(i);
+      }
+      else
+      {
+        i++;
+      }
+    } 
+  }
+  
+  void changeRoom(char c)
   {
-    if(ent.get(i) instanceof MonsterInstance)
+    if(c == '1')
     {
-      ent.remove(i);
+      tryRoom(0,-1);
     }
-    else
+    else if(c == '2')
     {
-      i++;
+      tryRoom(0,1);
+    }
+    else if(c == '3')
+    {
+      tryRoom(-1,0);
+    }
+    else if(c == '4')
+    {
+      tryRoom(1,0);
     }
   }
-}
 
-  
+  void tryRoom(int x,int y)
+  {
+    boolean used = false;
+    for(Room rm:rooms)
+    {
+      if(rm.locX == r.locX+x && rm.locY == r.locY+y && !used)
+      {
+        r = rm;
+        used = true;
+      }      
+    }
+    
+    if(!used)
+    {
+      Room room = new Room(r.locX+x,r.locY+y);
+      rooms.add(room);
+      r = room;
+      
+      if(p.mp<p.maxMp)
+      {
+        p.mp++;
+      }
+    }
+    
+    relocatePlayer(x,y); 
+  }
+
+  void relocatePlayer(int x,int y)
+  {
+    if(x == 1)
+    {
+      p.pos.x = sideBorder*1.2;
+      p.pos.y = height/2;
+    }
+    else if(x == -1)
+    {
+      p.pos.x = width-sideBorder*1.2;
+      p.pos.y = height/2;
+    }
+    else if(y == 1)
+    {
+      p.pos.x = width/2;
+      p.pos.y = topBorder*1.2;
+    }
+    else if(y == -1)
+    {
+      p.pos.x = width/2;
+      p.pos.y = height-topBorder*1.2;
+    }
+  }
 }
