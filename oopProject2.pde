@@ -82,8 +82,8 @@ void enterName()
     mode = 'o';
     textSize(height/33);
     textBuffer.add("Your name is " + name + ".");
-    textBuffer.add("But there's another name that describes you.");
-    textBuffer.add("That name is...");
+    textBuffer.add("But there's another word that describes you.");
+    textBuffer.add("That word is...");
     textBuffer.add("HERO.");
   }
 }
@@ -192,6 +192,7 @@ void keyTyped()
 
 void showMenu()
 {
+  textAlign(LEFT);
   float mappedHP = map(p.hp,0,p.maxHp,0,width*0.375);
   float mappedMP = map(p.mp,0,p.maxMp,0,width*0.375);
 
@@ -309,7 +310,8 @@ void gameOver()
 {
   background(0);
   fill(255);
-  text("GAME OVER",width/2-sideBorder,height/2);
+  textAlign(CENTER);
+  text("GAME OVER",width/2,height/2);
   if(next)
   {
     r = rooms.get(0);

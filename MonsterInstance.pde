@@ -1,6 +1,7 @@
 class MonsterInstance extends MobileEntity
 {
   int direction;
+  int moveChoice;
 
   MonsterType template;
     
@@ -98,7 +99,22 @@ class MonsterInstance extends MobileEntity
   
   void act()
   {
-    basicAttack();
+    if(b.turn=='e')
+    {
+      moveChoice = (int)random(5);
+      b.turn = 'f';
+    }
+    else
+    {
+      if(moveChoice==0)
+      {
+        specialAttack();
+      }
+      else
+      {
+        basicAttack();
+      }
+    }
   }
   
   void basicAttack()
@@ -109,6 +125,26 @@ class MonsterInstance extends MobileEntity
        if(b.sequentialText(template.name + " attacks!",1))
        {
           b.damage = (template.atk/p.def);
+          b.damageEntity(p);
+       }
+    }
+    if(b.textDepth==1)
+    {
+      if(b.sequentialText("you took a calamatious "+ b.damage +" damage!",2))
+      {
+         b.nextTurn();
+      }
+    }
+  }
+  
+  void specialAttack()
+  {
+    if(b.textDepth==0)
+    {
+      b.animateAttack();
+       if(b.sequentialText(template.specialAttack,1))
+       {
+          b.damage = (template.atk*2/p.def);
           b.damageEntity(p);
        }
     }

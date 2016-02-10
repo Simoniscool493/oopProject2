@@ -35,6 +35,12 @@ class Battle
   float bMainMenuHeight = height/3;
   
   int animationCount = 0;
+  int backgroundCount = 0;
+  
+  float circleFill = (int)random(255);
+  int numCircles;
+  float circleSize;
+  int backgroundSpeed;
   
   Battle()
   {
@@ -50,6 +56,11 @@ class Battle
     menuPoint = 0;
     inSpell = false;
     introCircleSize = 0;
+    textAlign(LEFT);
+    
+    numCircles = (int)random(7)+2;
+    circleSize = (width/numCircles)*1.5;
+    backgroundSpeed = (int)random(2)+1;
   }
   
   void startBattle()
@@ -72,7 +83,7 @@ class Battle
 
   void showBattleDetails()
   {
-    background(255,map(p.hp,0,p.maxHp,0,255),map(p.hp,0,p.maxHp,0,255));
+    stroke(0);
     fill(128);
     rect(bSideBorder,height-(height/3),width-(bSideBorder*2),height/3-bTopBorder);
     
@@ -94,7 +105,6 @@ class Battle
   
   void playBattleIntro()
   {
-    
     fill(0);
     stroke(0);
     ellipse(width/2,height/2,sideBorder*introCircleSize,sideBorder*introCircleSize);
@@ -102,8 +112,8 @@ class Battle
     stroke(127);
     ellipse(width/2,height/2,sideBorder*introCircleSize/2,sideBorder*introCircleSize/1.5);
     ellipse(width/2,height/2,sideBorder*introCircleSize/1.5,sideBorder*introCircleSize/2);
-    fill(255,map(p.hp,0,p.maxHp,0,255),map(p.hp,0,p.maxHp,0,255));
-    stroke(255,map(p.hp,0,p.maxHp,0,255),map(p.hp,0,p.maxHp,0,255));
+    fill(255);
+    stroke(255);
     ellipse(width/2,height/2,sideBorder*introCircleSize/2,sideBorder*introCircleSize/2);
 
     if(introCircleSize>24)
@@ -122,6 +132,7 @@ class Battle
   {
     if(turn != 'i')
     {
+      showBackground();
       showBattleDetails();
     }
 
@@ -203,10 +214,10 @@ class Battle
            }
         }
       }
-      else if(turn=='e')
+      else if(turn=='e'||turn=='f')
       {
         enemy.act();
-      }  
+      }      
     }
   }
    
@@ -257,6 +268,29 @@ class Battle
         death.play();
       }
     }
+  }
+  
+  void showBackground()
+  {
+     fill(circleFill,(circleFill*17)%255,(circleFill*7)%255);
+     stroke(circleFill,(circleFill*17)%255,(circleFill*7)%255);
+     background(circleFill+50,(circleFill*17)%255+50,(circleFill*7)%255+50);
+     
+     for(int i=width/(numCircles*2);i<width;i+=width/numCircles)
+     {
+       for(int j=height/(numCircles*2);j<height;j+=height/numCircles)
+       {
+         ellipse(i,j,backgroundCount,backgroundCount);
+       }
+     }
+          
+     backgroundCount+=backgroundSpeed+(int)random(2);
+     
+     if(backgroundCount > circleSize)
+     {
+       backgroundCount = 0;
+       circleFill=((circleFill+(int)random(200))%256);
+     }
   }
   
   void winBattle()
@@ -377,7 +411,7 @@ class Battle
   {
     if(num==0)
     {
-      return (p.atk * 3)/enemy.template.def;
+      return (p.atk * 6)/enemy.template.def;
     }
     if(num==1)
     {
@@ -406,30 +440,48 @@ class Battle
   
   void animateMagic(int n)
   {
-    if(n==0)
+    println(n);
+    if(n==0)//fire
     {
-      if((int)random(10)==5)
+      if((int)random(5)==0)
       {
-        fill(255,0,0);
+        if((int)random(3)==0)
+        {
+          background(255,0,0);
+        }
+        else
+        {
+          background(255,128,0);
+        }
       }
-      else
-      {
-        fill(255,128,0);
-      }
-
-      ellipse(width/2,height/2,sideBorder,sideBorder);
     }
-    if(n==1)
+    if(n==1)//thunder
     {
-      if((int)random(10)==5)
+      if((int)random(5)==0)
       {
-        fill(0);
+        if((int)random(10)==5)
+        {
+          background(0);
+        }
+        else
+        {
+          background(255,255,0);
+        }
       }
-      else
+    }
+     if(n==2)
+     {
+      if((int)random(5)==0)
       {
-        fill(255,255,0);
+        if((int)random(5)==0)
+        {
+          background(255,170,0);
+        }
+        else
+        {
+          background(255);
+        }
       }
-      rect(width/2-sideBorder/2,0,sideBorder,height);
     }
   }
     
@@ -453,16 +505,29 @@ class Battle
     float y1 = random(height);
     float x2 = random(width);
     float y2 = random(height);
+    
+    strokeWeight(10);
 
     if(turn=='q') //player attack
     {
       stroke(0,255,0);
     }
+    else if(enemy.moveChoice==0) // enemy special
+    {
+      if((int)random(2)==0)
+      {
+        stroke(enemy.template.col);
+      }
+      else
+      {
+        stroke(0);
+      }
+      strokeWeight(30);
+    }
     else //enemy attack
     {
-      stroke(128,0,0);
+      stroke(256,0,0);
     }
-    strokeWeight(10);
     
     line(x1-sideBorder/2,y1-sideBorder/2,x1+sideBorder/2,y1+sideBorder/2);
     line(x1+sideBorder/2,y1-sideBorder/2,x1-sideBorder/2,y1+sideBorder/2);
@@ -519,6 +584,7 @@ class Battle
   
   void showOwnStats()
   {
+     stroke(0);
      float mappedHP = map(p.hp,0,p.maxHp,0,width*0.36875);
      float mappedMP = map(p.mp,0,p.maxMp,0,width*0.36875);
      
@@ -539,6 +605,7 @@ class Battle
   
   void showEnemyStats()
   {
+     stroke(0);
      float mappedHP = map(enemy.hp,0,enemy.template.hp,0,width*0.36875);
 
      fill(128);
@@ -555,6 +622,7 @@ class Battle
   void showMenu(String[] points)
   {
     int l = points.length;
+    stroke(0);
     
     if(menuPoint>l-1)
     {
@@ -593,6 +661,7 @@ class Battle
   
   void showMpCost(int num)
   {
+     stroke(0);
      float mappedMP = map(p.mp,0,p.maxMp,0,width*0.36875);
      float mappedCost = map(magicCosts[num],0,p.maxMp,0,width*0.36875);
      

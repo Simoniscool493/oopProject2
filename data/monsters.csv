@@ -1,5 +1,9 @@
-id,name,hp,atk,def,speed,battleStartText,exp,boss
-0,test1,10,2,2,1,Test 1 will make you pay!,60,n
-1,test2,100,20,15,5,Test 2 seeks revenge!,600,n
-2,test3,30,2,2,10,Test 3 isn't sure why it's here.,180,n
-3,The Big Boss,800,20,20,30,The Big Boss will destroy you.,2000,y
+id,name,  hp, atk,def,speed,battleStartText,exp,boss,specialattack,red,green,blue
+0,Oneson,10,7,2,1,Oneson will make you pay!,80,n,Oneson engages its Deadly Laser Attack!,255,0,0
+1,Twodaeus,100,10,15,5,Twodaeus seeks revenge!,600,n,Twodaeus glares at you. It affects your vitality.,255,255,0
+2,Threedon,25,2,2,10,Threedon isn't sure why it's here.,180,n,Threedon just shrugs... but it somehow hurts you anyway.,0,162,232
+3,Fouriare,45,10,6,2,Fouriare thinks it's too good for you.,400,n,Fouriare's contempt damages your feelings.,34,177,76
+4,Falive,60,30,1,40,Falive points accusingly at you.,300,n,Falive performs an impossibly cool attack.,163,73,164
+5,Sixton,20,15,3,16,Sixton winks at you.,250,n,You're not sure what Sixton did, but it hurt.,127,127,127
+6,Seveny,15,1,2,1,Seveny dosen't know what to say.,40,n,Seveny tries its best.,255,40,111
+7,The Big Boss,800,25,25,30,The Big Boss will destroy you.,2000,y,The Big Boss unleashes an unfathomable attack...,255,127,39

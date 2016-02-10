@@ -28,9 +28,9 @@ class Player extends MobileEntity
     mercyInvincibility = 0;
     
     maxHp = 10;
-    hp = 1;
+    hp = 10;
     maxMp = 10;
-    mp = 0;
+    mp = 10;
     atk = 5;
     def = 5;
     speed = 100;
@@ -49,9 +49,6 @@ class Player extends MobileEntity
     int mappedHealth = (int)map(p.hp,0,p.maxHp,0,255);
     int mappedMagic = (int)map(p.mp,0,p.maxMp,0,255);
     
-    println(mappedMagic);
-
-
     fill(255);
     ellipse(pos.x,pos.y,width/20,width/20);
     
@@ -94,14 +91,17 @@ class Player extends MobileEntity
   {
     if(b.sequentialText(p.name + " grew to level " + (p.lv+1) + "!",2))
     {
+      int hpIncrease = (int)random(5)+2;
+      int mpIncrease = (int)random(2)+1;
+      
       lv++;
-      atk+=5;
-      def+=5;
-      speed+=5;
-      hp+=5;
-      maxHp+=5;
-      mp+=2;
-      maxMp+=2;
+      atk+=(int)random(5)+2;
+      def+=(int)random(5)+2;
+      speed+=(int)random(5)+2;
+      hp+=hpIncrease;
+      maxHp+=hpIncrease;
+      mp+=mpIncrease;
+      maxMp+=mpIncrease;
       expToLvUp = (lv*100);
     }
   }
