@@ -1,13 +1,15 @@
 abstract class Entity
+//abstract class for all entities on screen in the overworld
 {
   PVector pos;
   float hitBox;
   PImage sprite;
   char type;
+  //stores data on the type of entity, if it's a special entity or not, etc
   float h;
   float w;
   
-  Entity()
+  Entity() //if no position data is given, entity will spawn at a random spot in the dungeon
   {
     pos = new PVector(width/4*((int)random(3)+1),height/4*((int)random(3)+1));
   }
@@ -25,7 +27,7 @@ abstract class Entity
     hitBox = sideBorder/2.5;
   }
   
-  boolean isTouching(Entity e)
+  boolean isTouching(Entity e) //function for collision checking
   {
     if(pos.x+hitBox >= e.pos.x-e.hitBox && pos.x-hitBox <= e.pos.x+e.hitBox && pos.y+hitBox >= e.pos.y-e.hitBox && pos.y-hitBox <= e.pos.y+e.hitBox)
     {

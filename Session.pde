@@ -1,6 +1,7 @@
 class Session
+//class containing the current session. only one at a time
 {  
-  Session(char m)
+  Session(char m) //constructor that initializes the session, loads all data, and plays the game intro
   {   
     makePlayer();
     loadMonsters();
@@ -13,16 +14,15 @@ class Session
 
     intro.loop();
     
-    textBuffer.add("What is your name?\n(Press space to enter name)");
     background(0);
   }
 
-  void makePlayer()
+  void makePlayer() //creates the player character
   {
     p = new Player(width/2,height/2);
   }
   
-  void loadMonsters()
+  void loadMonsters() //loads all monster types from monsters.csv
   {
     String[] monsters = loadStrings("monsters.csv");
     
@@ -35,38 +35,17 @@ class Session
     }
   }
   
-  void loadSprites()
+  void loadSprites() //loads all sprites for the game
   {
     title = loadImage("title.png");
     topDoor = loadImage("doors/topDoor.png");
     bottomDoor = loadImage("doors/bottomDoor.png");
     leftDoor = loadImage("doors/leftDoor.png");
     rightDoor = loadImage("doors/rightDoor.png");
-    
-    loadBackgrounds();
+    caveWall = loadImage("cavewall.png");
   }
-  
-  void loadBackgrounds()
-  {
-    boolean more = true;
-    int i = 0;
     
-    while(more)
-    {
-      PImage ba = loadImage("background" + i + ".png");
-      if(ba != null)
-      {
-        backgrounds.add(ba);
-        i++;
-      }
-      else
-      {
-        more = false;
-      }
-    }
-  }
-  
-  void loadMusic()
+  void loadMusic() //loads all music files
   {
      minimIntro = new Minim(sound_this);
      minimBattle = new Minim(sound_this);
@@ -81,13 +60,13 @@ class Session
      death = minimDeath.loadFile("death.mp3");
   }
   
-  void initializeRoom()
+  void initializeRoom() //initializes the first room
   {
     r = new Room(0,0);
     rooms.add(r);
   }
   
-  void makeDoors()
+  void makeDoors() //makes and adds the doors
   {
     StaticEntity td = new StaticEntity(topDoor,width/2,topBorder/2,'1');
     StaticEntity bd = new StaticEntity(bottomDoor,width/2,height-topBorder/2,'2');

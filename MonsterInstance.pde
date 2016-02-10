@@ -1,9 +1,11 @@
 class MonsterInstance extends MobileEntity
+//class for a specific instance of a monster
 {
   int direction;
   int moveChoice;
 
   MonsterType template;
+  //each monster instance has a template loaded randomly from monsters.csv
     
   MonsterInstance(MonsterType m)
   {
@@ -15,6 +17,7 @@ class MonsterInstance extends MobileEntity
     
     angle1 = random(10);
     angle2 = random(10);
+    //initial angles for animation
     
     if(template.boss == 'y')
     {
@@ -30,7 +33,7 @@ class MonsterInstance extends MobileEntity
     }
   }
   
-  void update()
+  void update() //monsters are animated as one large sphere with two smaller spheres spinning around it
   {
     float ball1X = pos.x + sin(angle1) * hitBox*1.5;
     float ball1Y = pos.y + cos(angle1) * hitBox*1.5;
@@ -54,7 +57,7 @@ class MonsterInstance extends MobileEntity
     
   }
 
-  void move()
+  void move() //monsters move randomly; sometimes they stay still. unpredictable.
   {
     if(template.boss == 'n')
     {
@@ -117,7 +120,7 @@ class MonsterInstance extends MobileEntity
     }
   }
   
-  void basicAttack()
+  void basicAttack() //basic monster attack. does small damage.
   {
     if(b.textDepth==0)
     {
@@ -130,14 +133,14 @@ class MonsterInstance extends MobileEntity
     }
     if(b.textDepth==1)
     {
-      if(b.sequentialText("you took a calamatious "+ b.damage +" damage!",2))
+      if(b.sequentialText("you took "+ b.damage +" damage!",2))
       {
          b.nextTurn();
       }
     }
   }
   
-  void specialAttack()
+  void specialAttack() //special monster attack. has unique animation and flavor text, and does higher damage.
   {
     if(b.textDepth==0)
     {

@@ -6,8 +6,11 @@ C14444108
 <b><u>Controls:</u></b>
 
 WASD: Move, and navigate menus.
+
 E: Open overworld menu.
+
 Q: Back.
+
 Space: Enter, and move through text.
 
 <b><u>Summary:</u></b>

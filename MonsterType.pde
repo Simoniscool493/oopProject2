@@ -1,4 +1,5 @@
 class MonsterType
+//class of monster templates that instances of monsters are selected from
 {
   int id;
   String name;
@@ -10,12 +11,15 @@ class MonsterType
   PImage sprite;
   String battleStartText;
   String specialAttack;
+  String onDeath;
+  //flavor texts
   char boss;
   color col;
   int lineCol;
   
   MonsterType(String[] details)
   {
+    //takes string array of monster details loaded from file
     id = parseInt(details[0]);
     name = details[1];
     hp = parseInt(details[2]);
@@ -29,10 +33,11 @@ class MonsterType
     int red = parseInt(details[10]);
     int green = parseInt(details[11]);
     int blue = parseInt(details[12]);
+    onDeath = details[13];
   
     sprite = loadImage(id+".png");
     
-    lineCol = (speed*90)%255-63;
+    lineCol = (speed*90)%255-63; //decides monster line color from speed
     
     if(lineCol<63)
     {

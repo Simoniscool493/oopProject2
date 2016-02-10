@@ -1,16 +1,20 @@
 class Battle
 {
   MonsterInstance enemy;
+  //loads the enemy
     
-  String curBattleText;
-  int textDepth;
-  int index;
-  int damage;
-  int healed;
-  boolean inSpell;
-  char turn = 'i';
-  char menu = 'n';
+  String curBattleText;    //string holding the text currently shown to the player
+  int textDepth;           //stores how many times in the current sequence the player has pressed space
+  int index;               //stores the monster's number in the ent arraylist, so that it can be deleted if the battle is won
+  int damage;              //stores the damage currently being dealt
+  int healed;              //stores the damage currently being healed from
+  boolean inSpell;         //flag that indicates if the player is casting a spell
+  char turn = 'i';         //stores the current turn state.
+  char menu = 'n';         //stores the current menu
   
+  int menuPoint = 0;
+
+  //   Turn States:
   // s = starting state
   // e = enemy turn
   // p = player turn
@@ -21,33 +25,38 @@ class Battle
   // w = win
   // i = intro
 
-  String[] turnMenu = {"Attack","Magic","Run"};
-  String[] magicMenu = {"Fire","Thunder","Heal"};
-  int[] magicCosts = {3,8,5};
+  String[] turnMenu = {"Attack","Magic","Run"};    //stores the options in the main menu
+  String[] magicMenu = {"Fire","Thunder","Heal"};  //stores the options in the magic menu
+  int[] magicCosts = {3,8,5};                      //stores the mp costs of each spell
   
   float bSideBorder = sideBorder/2;
   float bTopBorder = topBorder/2;
+  //variables storing the borders of the battle menu
 
   float mSideBorder = bSideBorder + sideBorder/8;
   float mTopBorder = bTopBorder + topBorder/8;
+  //stores the borders of the battle submenus
   
   float bMainMenuWidth = width-(bSideBorder*2);
   float bMainMenuHeight = height/3;
+  //stores the dimensions of the main menu
   
   int animationCount = 0;
   int backgroundCount = 0;
+  //counters for the battle animations
   
   float circleFill = (int)random(255);
   int numCircles;
   float circleSize;
   int backgroundSpeed;
+  //counters for the background animation
   
-  Battle()
+  Battle() //empty constructor for the blank battle declared at the start
   {
     
   }
   
-  Battle(MonsterInstance m,int ind)
+  Battle(MonsterInstance m,int ind) //standard constructor for a battle. takes the monster and the monster id as paremeters.
   {
     enemy = m;
     index = ind;
@@ -56,14 +65,16 @@ class Battle
     menuPoint = 0;
     inSpell = false;
     introCircleSize = 0;
+    //initializing all standard battle variables
     textAlign(LEFT);
     
     numCircles = (int)random(7)+2;
     circleSize = (width/numCircles)*1.5;
     backgroundSpeed = (int)random(2)+1;
+    //randomly selects the style of the background for this battle
   }
   
-  void startBattle()
+  void startBattle() //starts the battle. plays the battle start flavor text and decides who will attack first.
   {
     curBattleText = enemy.template.battleStartText;
     if(battleNext)
@@ -81,7 +92,7 @@ class Battle
     }
   }
 
-  void showBattleDetails()
+  void showBattleDetails() //displays all the relavent details of the battle on the screen.
   {
     stroke(0);
     fill(128);
@@ -90,10 +101,6 @@ class Battle
     showOwnStats();
     showEnemyStats();
     
-    text(turn,50,30);
-    text(textDepth,70,30);
-    text(menu,90,30);
-
     showBattleSprite();
     showBattleText();
     
@@ -103,7 +110,7 @@ class Battle
     }
   }
   
-  void playBattleIntro()
+  void playBattleIntro() //plays the battle intro from the overworld.
   {
     fill(0);
     stroke(0);
@@ -128,7 +135,7 @@ class Battle
     stroke(0);
   }
   
-  void doBattle()
+  void doBattle() //the standard battle draw() method
   {
     if(turn != 'i')
     {
@@ -154,7 +161,7 @@ class Battle
       {
         startBattle();
       }
-      else if(turn == 'p')
+      else if(turn == 'p') //player's turn. detects when space is pressed and reacts accordingly.
       {
          if(battleNext)
          {
@@ -170,7 +177,7 @@ class Battle
             } 
          }
       }
-      else if(turn == 'q')
+      else if(turn == 'q') //player's action. performs the action that the player selected.
       {
         if(menu == 'm')
         {
@@ -195,7 +202,7 @@ class Battle
           doSelected(menuPoint);
         }
       }
-      else if(turn=='r')
+      else if(turn=='r') //submenu. selects fromt the options on the submenu or goes back.
       {
         if(key == 'q')
         {
@@ -214,14 +221,14 @@ class Battle
            }
         }
       }
-      else if(turn=='e'||turn=='f')
+      else if(turn=='e'||turn=='f') //enemy action. 
       {
         enemy.act();
       }      
     }
   }
    
-  void nextTurn()
+  void nextTurn() //resets variables and goes to next turn.
   {
     textDepth = 0;
     damage = 0;
@@ -230,15 +237,15 @@ class Battle
     curBattleText = "";
     menu = 'n';
     
-    if(p.hp<1)
+    if(p.hp<1) //checks for loss conditions
     {
       turn = 'd';
     }
-    else if(enemy.hp<1)
+    else if(enemy.hp<1)//checks for win conditions
     {
       turn = 'w';
     }
-    else
+    else //if battle is not lost or won, goes to next turn
     {
       if(turn == 'e' || turn == 'f')
       {
@@ -251,7 +258,7 @@ class Battle
     }
   }
   
-  void death()
+  void death() //says death message and prompts for death screen
   {
     if(textDepth==0)
     {
@@ -270,7 +277,7 @@ class Battle
     }
   }
   
-  void showBackground()
+  void showBackground() //animates the background with shapes and colors
   {
      fill(circleFill,(circleFill*17)%255,(circleFill*7)%255);
      stroke(circleFill,(circleFill*17)%255,(circleFill*7)%255);
@@ -293,49 +300,53 @@ class Battle
      }
   }
   
-  void winBattle()
+  void winBattle() //plays the win sequence.
   {
       if(textDepth==0)
       {
-        sequentialText("You win!!",1);
+         sequentialText(enemy.template.onDeath,1);
       }
       if(textDepth==1)
       {
-        if(sequentialText("You gained "+ enemy.template.exp +" exp. points",2))
-        {
-          p.expToLvUp-=enemy.template.exp;
-          
-          if(p.expToLvUp<1)
-          {
-            textDepth = 3;
-          }
-        }
+        sequentialText("You win!!",2);
       }
       if(textDepth==2)
       {
+        if(sequentialText("You gained "+ enemy.template.exp +" exp. points",3))
+        {
+          p.expToLvUp-=enemy.template.exp; //gives the player exp. points
+          
+          if(p.expToLvUp<1) //checks for level up
+          {
+            textDepth = 4;
+          }
+        }
+      }
+      if(textDepth==3)
+      {
         stopBattleMusic();
 
-        if(enemy.template.boss == 'y')
+        if(enemy.template.boss == 'y') //if the enemy was the boss, ends the game
         {
           mode = 'w';
           intro.loop();
         }
-        else
+        else //returns to overworld
         {
-          p.mercyInvincibility = 120;
+          p.mercyInvincibility = 60;
           mode = 'o';
           overworld.loop();
         }
         
         ent.remove(index);
       }
-      if(textDepth==3)
+      if(textDepth==4)
       {
           p.levelUp();
       }
   }
     
-  void doSelected(int sel)
+  void doSelected(int sel) //checks menu selection and then performs the action
   {
     
     if(menuPoint==0)
@@ -348,7 +359,7 @@ class Battle
     }
   }
   
-  void getHealed()
+  void getHealed() //gets the amount the player has healed
   {
      healed = 9 + (int)random(3);
      
@@ -364,11 +375,11 @@ class Battle
      p.hp+=healed;
   }
   
-  void doMagic(int num)
+  void doMagic(int num) //checks which spell is selected and performs it
   {
     if(textDepth==0)
     {
-      animateMagic(num);
+      animateMagic(num); //animates the magic
       if(sequentialText("You cast " + magicMenu[num] + "!",1))
       {
         if(num==2)
@@ -407,7 +418,7 @@ class Battle
     }
   }
   
-  int getMagicDamage(int num)
+  int getMagicDamage(int num) //returns the damage of the spell cast
   {
     if(num==0)
     {
@@ -421,7 +432,7 @@ class Battle
     return 0;
   }
   
-  void damageEntity(MobileEntity fe)
+  void damageEntity(MobileEntity fe) //damages an entity
   {
      if(damage<1)
      {
@@ -438,7 +449,7 @@ class Battle
      }
   }
   
-  void animateMagic(int n)
+  void animateMagic(int n) //animaties the chosen spell
   {
     println(n);
     if(n==0)//fire
@@ -485,7 +496,7 @@ class Battle
     }
   }
     
-  void run()
+  void run() //runs away from the battle (and gives the player a few seconds of invincibility
   {
     if(textDepth == 0)
     {
@@ -499,7 +510,7 @@ class Battle
     }
   }
   
-  void animateAttack()
+  void animateAttack() //animates  a basic attack (flashing 'x's across the screen)
   {
     float x1 = random(width);
     float y1 = random(height);
@@ -540,7 +551,7 @@ class Battle
     animationCount++;
   }
 
-  void basicAttack()
+  void basicAttack() //perfoms the player's basic attack
   {
     if(textDepth==0)
     {
@@ -561,7 +572,7 @@ class Battle
     }
   }
         
-  boolean sequentialText(String s,int next)
+  boolean sequentialText(String s,int next) //shows the text at the current point in the battle
   {
      curBattleText = s;      
     
@@ -582,7 +593,7 @@ class Battle
      text(curBattleText,sideBorder,height-(height/3)+topBorder/2);
   }
   
-  void showOwnStats()
+  void showOwnStats() //shows the player's stats
   {
      stroke(0);
      float mappedHP = map(p.hp,0,p.maxHp,0,width*0.36875);
@@ -603,7 +614,7 @@ class Battle
      rect(mSideBorder,topBorder/2+topBorder/4+height/21,mappedMP,height/21);
   }
   
-  void showEnemyStats()
+  void showEnemyStats() //shows the enemy's stats
   {
      stroke(0);
      float mappedHP = map(enemy.hp,0,enemy.template.hp,0,width*0.36875);
@@ -619,7 +630,7 @@ class Battle
      rect(width-sideBorder/2-width/2.5+sideBorder/8,topBorder/2+topBorder/8,mappedHP,height/21);
   }
   
-  void showMenu(String[] points)
+  void showMenu(String[] points) //shows a menu
   {
     int l = points.length;
     stroke(0);
@@ -647,7 +658,7 @@ class Battle
     
   }
   
-  void showBattleSprite()
+  void showBattleSprite() //shows the enemy's sprite
   {
     if(enemy.template.boss == 'y')
     {
@@ -659,7 +670,7 @@ class Battle
     }
   }
   
-  void showMpCost(int num)
+  void showMpCost(int num) //shows the cost of a spell in MP overlaid on the bar of current MP. bar is grey if cost is too high.
   {
      stroke(0);
      float mappedMP = map(p.mp,0,p.maxMp,0,width*0.36875);
@@ -677,7 +688,7 @@ class Battle
      }
   }
   
-  void stopBattleMusic()
+  void stopBattleMusic() //stops the battle music.
   {
     if(enemy.template.boss == 'y')
     {

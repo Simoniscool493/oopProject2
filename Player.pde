@@ -1,4 +1,5 @@
 class Player extends MobileEntity
+//class storing the current player and all their details
 {
   String name;
   
@@ -33,13 +34,13 @@ class Player extends MobileEntity
     mp = 10;
     atk = 5;
     def = 5;
-    speed = 100;
+    speed = 10;
     expToLvUp = 100;
     
     movementSpeed = width/80;
   }
   
-  void update()
+  void update() //player is a sphere with smaller spheres around it that indicate current hp and mp
   {
     float ball1X = pos.x + sin(angle1) * hitBox*1.5;
     float ball1Y = pos.y + cos(angle1) * hitBox*1.5;
@@ -67,37 +68,37 @@ class Player extends MobileEntity
 
   }
   
-  void move()
+  void move() //wasd to move
   {
-    if (keys['W']&&pos.y>topBorder)
-    {
-      pos.y-=movementSpeed;
-    }      
-    if (keys['A']&&pos.x>sideBorder)
-    {
-      pos.x-=movementSpeed;
-    }      
-    if (keys['S']&&pos.y<height-topBorder)
-    {
-      pos.y+=movementSpeed;
-    }      
-    if (keys['D']&&pos.x<width-sideBorder)
-    {
-      pos.x+=movementSpeed;
-    }      
+      if (keys['W']&&pos.y>topBorder)
+      {
+        pos.y-=movementSpeed;
+      }      
+      if (keys['A']&&pos.x>sideBorder)
+      {
+        pos.x-=movementSpeed;
+      }      
+      if (keys['S']&&pos.y<height-topBorder)
+      {
+        pos.y+=movementSpeed;
+      }      
+      if (keys['D']&&pos.x<width-sideBorder)
+      {
+        pos.x+=movementSpeed;
+      }       
   }
 
-  void levelUp()
+  void levelUp() //player levels up, with semi random stat increases
   {
-    if(b.sequentialText(p.name + " grew to level " + (p.lv+1) + "!",2))
+    if(b.sequentialText(p.name + " grew to level " + (p.lv+1) + "!",3))
     {
       int hpIncrease = (int)random(5)+2;
       int mpIncrease = (int)random(2)+1;
       
       lv++;
-      atk+=(int)random(5)+2;
-      def+=(int)random(5)+2;
-      speed+=(int)random(5)+2;
+      atk+=(int)random(5)+3;
+      def+=(int)random(5)+3;
+      speed+=(int)random(5)+3;
       hp+=hpIncrease;
       maxHp+=hpIncrease;
       mp+=mpIncrease;

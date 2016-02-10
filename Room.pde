@@ -1,21 +1,22 @@
 class Room
+//class that stores data about rooms in the dungeon
 {
   int background;
   int locX;
   int locY;
   boolean boss;
   boolean shop;
-  int roomNumMonsters = 3;
-  int numTypeMonsters = 2;
+  int roomNumMonsters = (int)random(5)+1;
+  int numTypeMonsters = (int)random(4)+1;
   int[] monstersInRoom;
+  color col;
   
   Room(int x,int y)
   {
     locX = x;
     locY = y;
 
-    if(((int)random(10) == 5) && abs(locX)+ abs(locY) > 6)
-    //if(true)
+    if(((int)random(10) == 5) && abs(locX)+ abs(locY) > 6) //if far enough from center, has a chance of spawning the Boss
     {
       boss = true;
     }
@@ -25,10 +26,12 @@ class Room
       chooseMonsters();
     }
     
-    background=(int)random(backgrounds.size());
+    //background=(int)random(backgrounds.size());
+    col = color(64+(int)random(191),64+(int)random(191),64+(int)random(191));
+    //randomly chooses a background color
   }
   
-  void makeMonsters()
+  void makeMonsters() //makes monsters in the room
   {
     if(boss)
     {
@@ -36,6 +39,7 @@ class Room
     }
     else
     {
+      roomNumMonsters = (int)random(5)+1;
       for(int i=0;i<roomNumMonsters;i++)
       {
         makeMonster(monstersInRoom[(int)random(numTypeMonsters)]);
@@ -43,7 +47,7 @@ class Room
     }
   }
   
-  void chooseMonsters()
+  void chooseMonsters() //chooses which types of monster this room will spawn
   {
     for(int i = 0;i<numTypeMonsters;i++)
     {
@@ -51,10 +55,10 @@ class Room
     }
   }
   
-  void makeMonster(int id)
+  void makeMonster(int id) //makes a monster of the given id
   {
     Entity monster = new MonsterInstance(mon.get(id));
-    if(((MonsterInstance)(monster)).template.boss == 'y')
+    if(((MonsterInstance)(monster)).template.boss == 'y') //puts monster in center if it's the Boss
     {
       monster.pos.x = width/2;
       monster.pos.y = height/2;
@@ -62,7 +66,7 @@ class Room
     ent.add(monster);
   }
   
-  void clearMonsters()
+  void clearMonsters() //clears all monsters from the room
   {
     int size = ent.size();
     int i = 0;
@@ -100,7 +104,7 @@ class Room
     }
   }
 
-  void tryRoom(int x,int y)
+  void tryRoom(int x,int y) //checks if room being entered is new, and creates it if it is
   {
     boolean used = false;
     for(Room rm:rooms)
@@ -127,7 +131,7 @@ class Room
     relocatePlayer(x,y); 
   }
 
-  void relocatePlayer(int x,int y)
+  void relocatePlayer(int x,int y) //puts player beside the door in the new room
   {
     if(x == 1)
     {

@@ -1,3 +1,7 @@
+//oopProject2
+//Simon O'Neill C14444108
+//10-02-2016
+
 import ddf.minim.*;
 
 Minim minimIntro;
@@ -14,30 +18,49 @@ AudioPlayer death;
 
 java.lang.Object sound_this = this;
 
+//minim objects declared here, for playing the music
+//sound_this holds the 'this' variable required to make minim work. it is used in the session class to load the music.
+
 ArrayList<Entity> ent = new ArrayList<Entity>();
 ArrayList<MonsterType> mon = new ArrayList<MonsterType>();
 ArrayList<Room> rooms = new ArrayList<Room>();
 ArrayList<PImage> backgrounds = new ArrayList<PImage>();
 ArrayList<String> textBuffer = new ArrayList<String>();
 
+//each arraylist has as purpose.
+//ent holds all entities on screen.
+//mon holds all monsters in the game.
+//rooms holds all loaded rooms in the dungeon.
+//backgrounds holds all backgrounds.
+//textBuffer holds all text in the game outside battles.
+
 boolean[] keys = new boolean[1024];
-PImage background;
+//keys is a boolean array used to scan for multiple keys at once. it's used to control the player's movement, allowing the player to move smoothly.
+
 PImage title;
+//the text on the title screen
+
+PImage caveWall;
 
 PImage topDoor;
 PImage bottomDoor;
 PImage leftDoor;
 PImage rightDoor;
+//the sprites of the doors
 
 float topBorder;
 float sideBorder;
-char mode;
+//the established borders of the screen
 
 float introCircleSize = 0;
 float introTitleHeight;
+//variables used for animating the intro
 
 String name = new String();
+//string holding the player name as it is entered in
 
+char mode;
+//each version of mode is a different state of the game.
 // i = intro 
 // o = overworld
 // m = menu
@@ -46,42 +69,57 @@ String name = new String();
 // w = win
 // e = enter name
 
-int menuPoint = 0;
+//
 boolean battleNext = false;
 boolean next = false;
 boolean newRoom = false;
+//flags that are used to control the flow of the program.
 
 Session s;
 Battle b = new Battle();
 Player p;
 Room r;
+//declares the session, player, current room and current battle. battle is initialized to a blank battle to its variables can be accessed.
 
 void setup()
 {  
-  size(1000,1000);
+  size(1200,1200);
   topBorder = height/8;
   sideBorder = width/8;
   textSize(height/33);
   
   s = new Session('i');
+  //starts the session by playing the intro
 }
 
-void enterName()
+void enterName() //function to enter the player name
 {
   background(0);
   fill(255);
   textSize(height/20);
+  textAlign(CENTER);
+  text("What is your name?",width/2,topBorder*2);
+  textAlign(LEFT);
   text(name,sideBorder,height/2);
+  textSize(height/33);
+  text("(Press space when done)",sideBorder,height/1.5);
   
-  if(next)
+  if(next) //if statements like these will run the code in the statement when the space key is pressed
   {
     next = false;
-    p.name = name;
+    if(name.isEmpty())
+    {
+      p.name = "A Mystery";
+    }
+    else
+    {
+      p.name = name;
+    }
     intro.pause();
     overworld.loop();
     mode = 'o';
     textSize(height/33);
-    textBuffer.add("Your name is " + name + ".");
+    textBuffer.add("Your name is " + p.name + ".");
     textBuffer.add("But there's another word that describes you.");
     textBuffer.add("That word is...");
     textBuffer.add("HERO.");
@@ -94,7 +132,7 @@ void draw()
    {
       playIntro();
    }
-   else if(!showText() && textBuffer.isEmpty())
+   else if(!showText() && textBuffer.isEmpty()) // the game prioritizes showing any text in textBuffer over running any other code indraw
    {
      if(mode == 'e')
      {
@@ -133,11 +171,11 @@ void keyTyped()
     {      
       if(key == 'w')
       {
-        menuPoint--;
+        b.menuPoint--;
       }
       if(key == 's')
       {
-        menuPoint++;
+        b.menuPoint++;
       }
     }
     
@@ -168,14 +206,9 @@ void keyTyped()
     next = true;
   }
   
-  if(key == 'm' && mode == 'o')
+  if(mode == 'e' && key != '\n' && key != '\t' && key != ' ' && textBuffer.isEmpty()) //code to enter the player name
   {
-    r.makeMonster(r.monstersInRoom[(int)random(r.numTypeMonsters)]);
-  }
-  
-  if(mode == 'e' && key != '\n' && key != '\t' && key != ' ' && textBuffer.isEmpty())
-  {
-    if(key == '\b')
+    if(key == '\b')//takes one character from the name if backspace is pressed
     {
       if(name.length()>0)
       {
@@ -190,11 +223,12 @@ void keyTyped()
   }
 }
 
-void showMenu()
+void showMenu() //shows the overworld menu
 {
   textAlign(LEFT);
   float mappedHP = map(p.hp,0,p.maxHp,0,width*0.375);
   float mappedMP = map(p.mp,0,p.maxMp,0,width*0.375);
+  //this code maps the current hp and mp to the two bars on the top of the screeen
 
   fill(128);
   rect(sideBorder,topBorder,width-sideBorder*2,height/2);
@@ -227,23 +261,23 @@ void keyReleased()
   keys[keyCode] = false;
 }
 
-void doOverworld()
+void doOverworld() //code for running the overworld mode
 {
-  if(textBuffer.isEmpty())
+  if(textBuffer.isEmpty()) //this if is here so that when the initial few lines of text is shown, the background will stay black.
   {
     imageMode(CORNER);
-    image(backgrounds.get(r.background),0,0,width,height);
+    //image(backgrounds.get(r.background),0,0,width,height);
+    background(r.col);
     imageMode(CENTER);
   }
   
-  if(!showText())
-  {
    updateEntities();
    updatePlayer();
-  }
+   
+   image(caveWall,width/2,height/2,width,height);
 }
 
-boolean showText()
+boolean showText() //code for showing text in the buffer
 {
   if(textBuffer.isEmpty())
   {
@@ -264,7 +298,7 @@ boolean showText()
   return true;
 }
 
-void updateEntities()
+void updateEntities() //code that updates all entities except the player
 {
   for(Entity e:ent)
   {
@@ -275,7 +309,7 @@ void updateEntities()
     
     e.update();
   
-    if(e instanceof MonsterInstance && p.isTouching(e) && p.mercyInvincibility == 0)
+    if(e instanceof MonsterInstance && p.isTouching(e) && p.mercyInvincibility == 0) //starts a battle if the player's touching a monster
     {
       b = new Battle((MonsterInstance)e,ent.indexOf(e));
       overworld.pause();
@@ -290,7 +324,7 @@ void updateEntities()
       mode = 'b';
     }
     
-    if(e.type > 10 && e.type < 53 && p.isTouching(e))
+    if(e.type > 10 && e.type < 53 && p.isTouching(e)) //changes room if the player's touching a door
     {
       newRoom = true;
       p.mercyInvincibility = 5;
@@ -298,7 +332,7 @@ void updateEntities()
     }
   }
   
-  if(newRoom)
+  if(newRoom) //resets spawned monsters if the player's in a new room
   {
     r.clearMonsters();
     newRoom = false;
@@ -306,14 +340,15 @@ void updateEntities()
   }
 }
   
-void gameOver()
+void gameOver() //shows the game over screen
 {
   background(0);
   fill(255);
   textAlign(CENTER);
   text("GAME OVER",width/2,height/2);
-  if(next)
+  if(next) //exits the game over screen and brings the player back to the first room
   {
+    r.clearMonsters();
     r = rooms.get(0);
     p.pos.x = width/2;
     p.pos.y = height/2;
@@ -326,7 +361,7 @@ void gameOver()
   }
 }
 
-void updatePlayer()
+void updatePlayer() //updates the player character
 {
   p.move();
   p.update();    
@@ -337,7 +372,7 @@ void updatePlayer()
   }
 }
 
-void playIntro()
+void playIntro() //plays the intro to the game
 {
   fill(255);
   background(0);
@@ -362,7 +397,7 @@ void playIntro()
   }
 }
 
-void winGame()
+void winGame() //congratulates player when game is won
 {
   background(255);
   fill(255,128,0);

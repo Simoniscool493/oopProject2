@@ -1,4 +1,5 @@
 class StaticEntity extends Entity
+//class for all entities that don't move.
 {
   StaticEntity()
   {
